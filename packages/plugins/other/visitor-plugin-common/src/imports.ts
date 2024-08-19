@@ -32,7 +32,7 @@ export type FragmentImport = {
 
 export function generateFragmentImportStatement(
   statement: ImportDeclaration<FragmentImport>,
-  kind: 'type' | 'document' | 'both'
+  kind: 'type' | 'document' | 'both',
 ): string {
   const { importSource: fragmentImportSource, ...rest } = statement;
   const { identifiers, path, namespace } = fragmentImportSource;
@@ -57,7 +57,11 @@ export function generateImportStatement(statement: ImportDeclaration): string {
     ? `{ ${Array.from(new Set(importSource.identifiers)).join(', ')} }`
     : '*';
   const importExtension =
-    importPath.startsWith('/') || importPath.startsWith('.') ? (statement.emitLegacyCommonJSImports ? '' : '.js') : '';
+    importPath.startsWith('/') || importPath.startsWith('.')
+      ? statement.emitLegacyCommonJSImports
+        ? ''
+        : '.js'
+      : '';
   const importAlias = importSource.namespace ? ` as ${importSource.namespace}` : '';
   const importStatement = typesImport ? 'import type' : 'import';
   return `${importStatement} ${importNames}${importAlias} from '${importPath}${importExtension}';${

@@ -1,5 +1,5 @@
-import { Types } from '@graphql-codegen/plugin-helpers';
 import inquirer from 'inquirer';
+import { Types } from '@graphql-codegen/plugin-helpers';
 import { bold, writeConfig, writePackage } from './helpers.js';
 import { getQuestions } from './questions.js';
 import { guessTargets } from './targets.js';

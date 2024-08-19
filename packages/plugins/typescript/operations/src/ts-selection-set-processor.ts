@@ -1,3 +1,4 @@
+import { GraphQLInterfaceType, GraphQLObjectType } from 'graphql';
 import {
   BaseSelectionSetProcessor,
   LinkField,
@@ -6,13 +7,12 @@ import {
   ProcessResult,
   SelectionSetProcessorConfig,
 } from '@graphql-codegen/visitor-plugin-common';
-import { GraphQLInterfaceType, GraphQLObjectType } from 'graphql';
 
 export class TypeScriptSelectionSetProcessor extends BaseSelectionSetProcessor<SelectionSetProcessorConfig> {
   transformPrimitiveFields(
     schemaType: GraphQLObjectType | GraphQLInterfaceType,
     fields: PrimitiveField[],
-    unsetTypes?: boolean
+    unsetTypes?: boolean,
   ): ProcessResult {
     if (fields.length === 0) {
       return [];
@@ -25,7 +25,9 @@ export class TypeScriptSelectionSetProcessor extends BaseSelectionSetProcessor<S
       });
 
     if (unsetTypes) {
-      return [`MakeEmpty<${parentName}, ${fields.map(field => `'${field.fieldName}'`).join(' | ')}>`];
+      return [
+        `MakeEmpty<${parentName}, ${fields.map(field => `'${field.fieldName}'`).join(' | ')}>`,
+      ];
     }
 
     let hasConditionals = false;
@@ -63,7 +65,7 @@ export class TypeScriptSelectionSetProcessor extends BaseSelectionSetProcessor<S
 
   transformAliasesPrimitiveFields(
     schemaType: GraphQLObjectType | GraphQLInterfaceType,
-    fields: PrimitiveAliasedFields[]
+    fields: PrimitiveAliasedFields[],
   ): ProcessResult {
     if (fields.length === 0) {
       return [];
@@ -94,6 +96,8 @@ export class TypeScriptSelectionSetProcessor extends BaseSelectionSetProcessor<S
       return [];
     }
 
-    return [`{ ${fields.map(field => `${field.alias || field.name}: ${field.selectionSet}`).join(', ')} }`];
+    return [
+      `{ ${fields.map(field => `${field.alias || field.name}: ${field.selectionSet}`).join(', ')} }`,
+    ];
   }
 }

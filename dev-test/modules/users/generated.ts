@@ -1,5 +1,6 @@
-import * as Types from '../types';
 import * as gm from 'graphql-modules';
+import * as Types from '../types';
+
 export namespace UsersModule {
   interface DefinedFields {
     User: 'id' | 'firstName' | 'lastName';

@@ -1,8 +1,8 @@
 import { existsSync } from 'fs';
 import { resolve } from 'path';
-import { expect } from '@jest/globals';
 import { oneLine, stripIndent } from 'common-tags';
 import { diff } from 'jest-diff';
+import { expect } from '@jest/globals';
 
 declare global {
   namespace jest {

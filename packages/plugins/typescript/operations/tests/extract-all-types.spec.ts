@@ -1,6 +1,6 @@
+import { buildSchema, parse } from 'graphql';
 import { mergeOutputs, Types } from '@graphql-codegen/plugin-helpers';
 import { validateTs } from '@graphql-codegen/testing';
-import { buildSchema, parse } from 'graphql';
 import { plugin as tsPlugin } from '../../typescript/src/index.js';
 import { plugin, TypeScriptDocumentsPluginConfig } from '../src/index.js';
 
@@ -80,7 +80,7 @@ describe('extractAllFieldsToTypes: true', () => {
       dummyUserTestSchema,
       [{ location: 'test-file.ts', document: dummyUserDoc }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "type UserFragment_DummyUser = {
@@ -236,7 +236,7 @@ describe('extractAllFieldsToTypes: true', () => {
     }
 
     union OriginatedFrom =
-        EmailInteraction
+      | EmailInteraction
       | CustomChannelInteraction
       | TalkInteraction
       | NativeMessagingInteraction
@@ -383,7 +383,7 @@ describe('extractAllFieldsToTypes: true', () => {
       complexTestSchemaWithUnionsAndInterfaces,
       [{ location: 'test-file.ts', document: fragmentsOnComplexSchema }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "export type ConversationBotSolutionFragment_BotSolution_article_ArchivedArticle = { __typename: 'ArchivedArticle', id: string, htmlUrl: string, title: string, url: string };
@@ -503,7 +503,7 @@ describe('extractAllFieldsToTypes: true', () => {
       complexTestSchemaWithUnionsAndInterfaces,
       [{ location: 'test-file.ts', document: fragmentsOnComplexSchema }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "export type ConversationBotSolutionFragment_BotSolution_article_ArchivedArticle = (
@@ -648,7 +648,7 @@ describe('extractAllFieldsToTypes: true', () => {
       complexTestSchemaWithUnionsAndInterfaces,
       [{ location: 'test-file.ts', document: fragmentsOnComplexSchema }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "export type ConversationBotSolutionFragment_BotSolution_article_ArchivedArticle = { __typename: 'ArchivedArticle', id: string, htmlUrl: string, title: string, url: string };
@@ -842,7 +842,7 @@ describe('extractAllFieldsToTypes: true', () => {
       complexTestSchemaWithUnionsAndInterfaces,
       [{ location: 'test-file.ts', document: fragmentsOnComplexSchema }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "export type ConversationBotSolutionFragment_BotSolution_article_ArchivedArticle = { __typename: 'ArchivedArticle', id: string, htmlUrl: string, title: string, url: string };
@@ -1033,7 +1033,7 @@ describe('extractAllFieldsToTypes: true', () => {
       complexTestSchemaWithUnionsAndInterfaces,
       [{ location: 'test-file.ts', document: fragmentsOnComplexSchema }],
       config,
-      { outputFile: '' }
+      { outputFile: '' },
     );
     expect(content).toMatchInlineSnapshot(`
       "export type ConversationBotSolutionFragment_BotSolution_article_ArchivedArticle = (

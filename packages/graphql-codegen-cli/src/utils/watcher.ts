@@ -1,14 +1,15 @@
-import { join, isAbsolute, relative, resolve, sep } from 'path';
+import { isAbsolute, join, relative, resolve, sep } from 'path';
+import debounce from 'debounce';
+import logSymbols from 'log-symbols';
+import mm from 'micromatch';
 import { normalizeOutputParam, Types } from '@graphql-codegen/plugin-helpers';
 import type { subscribe } from '@parcel/watcher';
-import debounce from 'debounce';
-import mm from 'micromatch';
-import logSymbols from 'log-symbols';
 import { executeCodegen } from '../codegen.js';
 import { CodegenContext, loadContext } from '../config.js';
 import { lifecycleHooks } from '../hooks.js';
-import { access } from './file-system.js';
+import { AbortController } from './abort-controller-polyfill.js';
 import { debugLog } from './debugging.js';
+import { access } from './file-system.js';
 import { getLogger } from './logger.js';
 import {
   allAffirmativePatternsFromPatternSets,
@@ -16,7 +17,6 @@ import {
   makeLocalPatternSet,
   makeShouldRebuild,
 } from './patterns.js';
-import { AbortController } from './abort-controller-polyfill.js';
 
 function log(msg: string) {
   // double spaces to inline the message with Listr
@@ -29,7 +29,7 @@ function emitWatching(watchDir: string) {
 
 export const createWatcher = (
   initialContext: CodegenContext,
-  onNext: (result: Types.FileOutput[]) => Promise<Types.FileOutput[]>
+  onNext: (result: Types.FileOutput[]) => Promise<Types.FileOutput[]>,
 ): {
   /**
    * Call this function to stop the running watch server
@@ -51,7 +51,10 @@ export const createWatcher = (
   const localPatternSets = Object.keys(config.generates)
     .map(filename => normalizeOutputParam(config.generates[filename]))
     .map(conf => makeLocalPatternSet(conf));
-  const allAffirmativePatterns = allAffirmativePatternsFromPatternSets([globalPatternSet, ...localPatternSets]);
+  const allAffirmativePatterns = allAffirmativePatternsFromPatternSets([
+    globalPatternSet,
+    ...localPatternSets,
+  ]);
 
   const shouldRebuild = makeShouldRebuild({ globalPatternSet, localPatternSets });
 
@@ -66,7 +69,7 @@ export const createWatcher = (
       parcelWatcher = await import('@parcel/watcher');
     } catch (err) {
       log(
-        `Failed to import @parcel/watcher due to the following error (to use watch mode, install https://www.npmjs.com/package/@parcel/watcher):\n${err}`
+        `Failed to import @parcel/watcher due to the following error (to use watch mode, install https://www.npmjs.com/package/@parcel/watcher):\n${err}`,
       );
       return;
     }
@@ -91,7 +94,10 @@ export const createWatcher = (
     }))) {
       // ParcelWatcher expects relative ignore patterns to be relative from watchDirectory,
       // but we expect filename from config to be relative from cwd, so we need to convert
-      const filenameRelativeFromWatchDirectory = relative(watchDirectory, resolve(process.cwd(), entry.filename));
+      const filenameRelativeFromWatchDirectory = relative(
+        watchDirectory,
+        resolve(process.cwd(), entry.filename),
+      );
 
       if (entry.config.preset) {
         const extension = entry.config.presetConfig?.extension;
@@ -125,7 +131,8 @@ export const createWatcher = (
               log(`${logSymbols.info} Config file has changed, reloading...`);
               const context = await loadContext(config.configFilePath);
 
-              const newParsedConfig: Types.Config & { configFilePath?: string } = context.getConfig();
+              const newParsedConfig: Types.Config & { configFilePath?: string } =
+                context.getConfig();
               newParsedConfig.watch = config.watch;
               newParsedConfig.silent = config.silent;
               newParsedConfig.overwrite = config.overwrite;
@@ -135,17 +142,17 @@ export const createWatcher = (
             }
 
             debouncedExec();
-          })
+          }),
         );
       },
-      { ignore: ignored }
+      { ignore: ignored },
     );
 
     debugLog(`[Watcher] Started`);
 
     const shutdown = (
       /** Optional callback to execute after shutdown has completed its async tasks */
-      afterShutdown?: () => void
+      afterShutdown?: () => void,
     ) => {
       isShutdown = true;
       debugLog(`[Watcher] Shutting down`);

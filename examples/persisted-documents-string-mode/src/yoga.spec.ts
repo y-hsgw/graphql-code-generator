@@ -1,6 +1,6 @@
 import { graphql } from './gql/index';
-import { makeYoga } from './yoga';
 import persistedDocumentsDictionary from './gql/persisted-documents.json';
+import { makeYoga } from './yoga';
 
 const persistedDocuments = new Map<string, string>(Object.entries(persistedDocumentsDictionary));
 

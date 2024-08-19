@@ -43,7 +43,10 @@
         },
         "watch": {
           "description": "A flag to trigger codegen when there are changes in the specified GraphQL schemas.\n\nYou can either specify a boolean to turn it on/off or specify an array of glob patterns to add custom files to the watch.\n\nFor more details: https://graphql-code-generator.com/docs/getting-started/development-workflow#watch-mode",
-          "anyOf": [{ "type": "array", "items": { "type": "string" } }, { "type": ["string", "boolean"] }]
+          "anyOf": [
+            { "type": "array", "items": { "type": "string" } },
+            { "type": ["string", "boolean"] }
+          ]
         },
         "watchConfig": {
           "description": "Allows overriding the behavior of watch to use stat polling over native file watching support.\n\nConfig fields have the same defaults and sematics as the identically named ones for chokidar.\n\nFor more details: https://graphql-code-generator.com/docs/getting-started/development-workflow#watch-mode",
@@ -58,8 +61,14 @@
           "description": "A flag to disable adding `.js` extension to the output file. Default: `true`.",
           "type": "boolean"
         },
-        "silent": { "description": "A flag to suppress printing errors when they occur.", "type": "boolean" },
-        "verbose": { "description": "A flag to output more detailed information about tasks", "type": "boolean" },
+        "silent": {
+          "description": "A flag to suppress printing errors when they occur.",
+          "type": "boolean"
+        },
+        "verbose": {
+          "description": "A flag to output more detailed information about tasks",
+          "type": "boolean"
+        },
         "debug": { "description": "A flag to output debug logs", "type": "boolean" },
         "errorsOnly": { "description": "A flag to print only errors.", "type": "boolean" },
         "pluginLoader": {
@@ -196,7 +205,10 @@
           "description": "Customize the fetcher you wish to use in the generated file. React-Query is agnostic to the data-fetching layer, so you should provide it, or use a custom one.\n\nThe following options are available to use:\n\n- 'fetch' - requires you to specify endpoint and headers on each call, and uses `fetch` to do the actual http call.\n- `{ endpoint: string, fetchParams: RequestInit }`: hardcode your endpoint and fetch options into the generated output, using the environment `fetch` method. You can also use `process.env.MY_VAR` as endpoint or header value.\n- `file#identifier` - You can use custom fetcher method that should implement the exported `ReactQueryFetcher` interface. Example: `./my-fetcher#myCustomFetcher`.\n- `graphql-request`: Will generate each hook with `client` argument, where you should pass your own `GraphQLClient` (created from `graphql-request`).",
           "anyOf": [
             { "$ref": "#/definitions/HardcodedFetch" },
-            { "type": "object", "properties": { "func": { "type": "string" }, "isReactHook": { "type": "boolean" } } },
+            {
+              "type": "object",
+              "properties": { "func": { "type": "string" }, "isReactHook": { "type": "boolean" } }
+            },
             { "type": "string" }
           ]
         },
@@ -276,8 +288,14 @@
           "$ref": "#/definitions/ScalarsMap",
           "description": "Extends or overrides the built-in scalars and custom GraphQL scalars to a custom type."
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "nonOptionalTypename": {
           "description": "Automatically adds `__typename` field to the generated types, even when they are not specified\nin the selection set, and makes it non-optional\nDefault value: \"false\"",
           "type": "boolean"
@@ -425,8 +443,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -569,7 +593,10 @@
           "type": "string",
           "description": "Allow to override the type value of `EntireFieldWrapper`. This wrapper applies outside of Array and Maybe\nunlike `fieldWrapperValue`, that will wrap the inner type.\nDefault value: \"T | Promise<T> | (() => T | Promise<T>)\""
         },
-        "allowEnumStringTypes": { "description": "Allow using enum string values directly.", "type": "boolean" },
+        "allowEnumStringTypes": {
+          "description": "Allow using enum string values directly.",
+          "type": "boolean"
+        },
         "addUnderscoreToArgsType": {
           "description": "Adds `_` to generated `Args` types in order to avoid duplicate identifiers.",
           "type": "boolean"
@@ -629,8 +656,14 @@
           "$ref": "#/definitions/NamingConvention_1",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -805,8 +838,14 @@
           "$ref": "#/definitions/NamingConvention_1",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -881,8 +920,14 @@
           "$ref": "#/definitions/NamingConvention_2",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -917,7 +962,10 @@
           "description": "Allow you to customize the namespace name.\nDefault value: \"GraphQLCodeGen\"",
           "type": "string"
         },
-        "namedClient": { "description": "Defined the global value of `namedClient`.", "type": "string" },
+        "namedClient": {
+          "description": "Defined the global value of `namedClient`.",
+          "type": "string"
+        },
         "querySuffix": {
           "description": "Allows to define a custom suffix for query operations.\nDefault value: \"GQL\"",
           "type": "string"
@@ -1018,8 +1066,14 @@
           "$ref": "#/definitions/NamingConvention_2",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1062,7 +1116,10 @@
           "description": "Set to true in order to print description as comments (using `#` instead of `\"\"\"`)\nDefault value: \"false\"",
           "type": "boolean"
         },
-        "sort": { "description": "Set to false to disable sorting\nDefault value: \"true\"", "type": "boolean" },
+        "sort": {
+          "description": "Set to false to disable sorting\nDefault value: \"true\"",
+          "type": "boolean"
+        },
         "federation": { "type": "boolean" }
       }
     },
@@ -1146,7 +1203,10 @@
           "type": "string",
           "description": "Allow to override the type value of `EntireFieldWrapper`. This wrapper applies outside of Array and Maybe\nunlike `fieldWrapperValue`, that will wrap the inner type.\nDefault value: \"T | Promise<T> | (() => T | Promise<T>)\""
         },
-        "allowEnumStringTypes": { "description": "Allow using enum string values directly.", "type": "boolean" },
+        "allowEnumStringTypes": {
+          "description": "Allow using enum string values directly.",
+          "type": "boolean"
+        },
         "addUnderscoreToArgsType": {
           "description": "Adds `_` to generated `Args` types in order to avoid duplicate identifiers.",
           "type": "boolean"
@@ -1202,8 +1262,14 @@
           "$ref": "#/definitions/NamingConvention_2",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1362,8 +1428,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1433,8 +1505,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1550,7 +1628,10 @@
           "description": "Allow you to override `resolverTypeWrapper` definition.\nDefault value: \"Promise<T> | T\"",
           "type": "string"
         },
-        "federation": { "description": "Supports Apollo Federation\nDefault value: \"false\"", "type": "boolean" },
+        "federation": {
+          "description": "Supports Apollo Federation\nDefault value: \"false\"",
+          "type": "boolean"
+        },
         "enumPrefix": {
           "description": "Allow you to disable prefixing for generated enums, works in combination with `typesPrefix`.\nDefault value: \"true\"",
           "type": "boolean"
@@ -1589,7 +1670,10 @@
         },
         "resolversNonOptionalTypename": {
           "description": "Makes `__typename` of resolver mappings non-optional without affecting the base types.\nDefault value: \"false\"",
-          "anyOf": [{ "$ref": "#/definitions/ResolversNonOptionalTypenameConfig" }, { "type": "boolean" }]
+          "anyOf": [
+            { "$ref": "#/definitions/ResolversNonOptionalTypenameConfig" },
+            { "type": "boolean" }
+          ]
         },
         "strictScalars": {
           "description": "Makes scalars strict.\n\nIf scalars are found in the schema that are not defined in `scalars`\nan error will be thrown during codegen.\nDefault value: \"false\"",
@@ -1607,8 +1691,14 @@
           "$ref": "#/definitions/NamingConvention_1",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1647,13 +1737,22 @@
           "description": "Allows to define `ngModule` as part of the plugin's config so it's globally available.",
           "type": "string"
         },
-        "namedClient": { "description": "Defined the global value of `namedClient`.", "type": "string" },
-        "serviceName": { "description": "Defined the global value of `serviceName`.", "type": "string" },
+        "namedClient": {
+          "description": "Defined the global value of `namedClient`.",
+          "type": "string"
+        },
+        "serviceName": {
+          "description": "Defined the global value of `serviceName`.",
+          "type": "string"
+        },
         "serviceProvidedInRoot": {
           "description": "Defined the global value of `serviceProvidedInRoot`.",
           "type": "boolean"
         },
-        "serviceProvidedIn": { "description": "Define the Injector of the SDK class.", "type": "string" },
+        "serviceProvidedIn": {
+          "description": "Define the Injector of the SDK class.",
+          "type": "string"
+        },
         "sdkClass": {
           "description": "Set to `true` in order to generate a SDK service class that uses all generated services.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1767,8 +1866,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -1905,8 +2010,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2080,8 +2191,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2116,7 +2233,10 @@
           "description": "Customized the output by enabling/disabling the generated Vue composition functions.\nDefault value: \"true\"",
           "type": "boolean"
         },
-        "vueApolloComposableImportFrom": { "type": "string", "description": "\nDefault value: \"\"" },
+        "vueApolloComposableImportFrom": {
+          "type": "string",
+          "description": "\nDefault value: \"\""
+        },
         "vueCompositionApiImportFrom": { "type": "string", "description": "\nDefault value: \"\"" },
         "addDocBlocks": {
           "description": "Allows you to enable/disable the generation of docblocks in generated code.\nSome IDE's (like VSCode) add extra inline information with docblocks, you can disable this feature if your preferred IDE does not.\nDefault value: \"true\"",
@@ -2206,8 +2326,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2358,8 +2484,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2482,8 +2614,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2602,8 +2740,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2638,8 +2782,14 @@
           "$ref": "#/definitions/NamingConvention_1",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "namePrefix": { "description": "Adds prefix to the name\nDefault value: \"\"", "type": "string" },
-        "nameSuffix": { "description": "Adds suffix to the name\nDefault value: \"\"", "type": "string" },
+        "namePrefix": {
+          "description": "Adds prefix to the name\nDefault value: \"\"",
+          "type": "string"
+        },
+        "nameSuffix": {
+          "description": "Adds suffix to the name\nDefault value: \"\"",
+          "type": "string"
+        },
         "fragmentPrefix": {
           "description": "Adds prefix to the fragment variable\nDefault value: \"\"",
           "type": "string"
@@ -2728,8 +2878,14 @@
           "$ref": "#/definitions/ScalarsMap_1",
           "description": "Extends or overrides the built-in scalars and custom GraphQL scalars to a custom type."
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2804,8 +2960,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2872,8 +3034,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -2939,8 +3107,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -3050,8 +3224,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -3131,7 +3311,10 @@
           "description": "Allow you to override `resolverTypeWrapper` definition.\nDefault value: \"Promise<T> | T\"",
           "type": "string"
         },
-        "federation": { "description": "Supports Apollo Federation\nDefault value: \"false\"", "type": "boolean" },
+        "federation": {
+          "description": "Supports Apollo Federation\nDefault value: \"false\"",
+          "type": "boolean"
+        },
         "enumPrefix": {
           "description": "Allow you to disable prefixing for generated enums, works in combination with `typesPrefix`.\nDefault value: \"true\"",
           "type": "boolean"
@@ -3180,8 +3363,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -3331,8 +3520,14 @@
           "$ref": "#/definitions/NamingConvention",
           "description": "Allow you to override the naming convention of the output.\nYou can either override all namings, or specify an object with specific custom naming convention per output.\nThe format of the converter must be a valid `module#method`.\nAllowed values for specific output are: `typeNames`, `enumValues`.\nYou can also use \"keep\" to keep all GraphQL names as-is.\nAdditionally, you can set `transformUnderscore` to `true` if you want to override the default behavior,\nwhich is to preserve underscores.\n\nAvailable case functions in `change-case-all` are `camelCase`, `capitalCase`, `constantCase`, `dotCase`, `headerCase`, `noCase`, `paramCase`, `pascalCase`, `pathCase`, `sentenceCase`, `snakeCase`, `lowerCase`, `localeLowerCase`, `lowerCaseFirst`, `spongeCase`, `titleCase`, `upperCase`, `localeUpperCase` and `upperCaseFirst`\n[See more](https://github.com/btxtiger/change-case-all)\nDefault value: \"change-case-all#pascalCase\""
         },
-        "typesPrefix": { "description": "Prefixes all the generated types.\nDefault value: \"\"", "type": "string" },
-        "typesSuffix": { "description": "Suffixes all the generated types.\nDefault value: \"\"", "type": "string" },
+        "typesPrefix": {
+          "description": "Prefixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
+        "typesSuffix": {
+          "description": "Suffixes all the generated types.\nDefault value: \"\"",
+          "type": "string"
+        },
         "skipTypename": {
           "description": "Does not add `__typename` to the generated types, unless it was specified in the selection set.\nDefault value: \"false\"",
           "type": "boolean"
@@ -3475,7 +3670,10 @@
           "type": "string",
           "description": "Optional, override the name of the import namespace used to import from the `baseTypesPath` file.\nDefault value: \"Types\""
         },
-        "filename": { "type": "string", "description": "Required, sets the file name for the generated files." },
+        "filename": {
+          "type": "string",
+          "description": "Required, sets the file name for the generated files."
+        },
         "encapsulateModuleTypes": {
           "type": "string",
           "description": "Configure how to encapsulate the module types, to avoid confusion.\n\n`namespace` (default): will wrap all types in a TypeScript namespace, using the module name.\n`prefix`: will prefix all types from a specific module with the module name.\n`none`: will skip encapsulation, and generate type as-is.\nDefault value: \"namespace\""
@@ -3604,7 +3802,10 @@
           "description": "Specify a Node module name, or a custom file, to be used instead of standard `fetch`",
           "type": "string"
         },
-        "method": { "description": "HTTP Method to use, either POST (default) or GET.", "type": "string" },
+        "method": {
+          "description": "HTTP Method to use, either POST (default) or GET.",
+          "type": "string"
+        },
         "handleAsSDL": {
           "description": "Handling the response as SDL will allow you to load schema from remote server that doesn't return a JSON introspection.",
           "type": "boolean"
@@ -3682,7 +3883,9 @@
           "type": "boolean"
         },
         "cwd": { "type": "string" },
-        "ignore": { "anyOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }] },
+        "ignore": {
+          "anyOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }]
+        },
         "includeSources": { "type": "boolean" }
       }
     },
@@ -3704,7 +3907,9 @@
         { "type": "string" }
       ]
     },
-    "Types.RequireExtension": { "anyOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }] },
+    "Types.RequireExtension": {
+      "anyOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }]
+    },
     "Types.InstanceOrArray_1": {
       "anyOf": [
         { "$ref": "#/definitions/Types.CustomDocumentLoader" },
@@ -3732,7 +3937,10 @@
     },
     "Types.ConfiguredPlugin": {
       "type": "object",
-      "additionalProperties": { "type": "object", "additionalProperties": { "$ref": "#/definitions/T" } },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": { "$ref": "#/definitions/T" }
+      },
       "properties": {
         "flutter-freezed": { "$ref": "#/definitions/FlutterFreezedPluginConfig" },
         "typescript-react-query": { "$ref": "#/definitions/ReactQueryRawPluginConfig" },
@@ -3747,7 +3955,9 @@
         "c-sharp-operations": { "$ref": "#/definitions/CSharpOperationsRawPluginConfig" },
         "schema-ast": { "$ref": "#/definitions/SchemaASTConfig" },
         "typescript-type-graphql": { "$ref": "#/definitions/TypeGraphQLPluginConfig" },
-        "typescript-graphql-files-modules": { "$ref": "#/definitions/TypeScriptFilesModulesPluginConfig" },
+        "typescript-graphql-files-modules": {
+          "$ref": "#/definitions/TypeScriptFilesModulesPluginConfig"
+        },
         "named-operations-object": { "$ref": "#/definitions/NamedOperationsObjectPluginConfig" },
         "typescript-graphql-request": { "$ref": "#/definitions/RawGraphQLRequestPluginConfig" },
         "typescript-mongodb": { "$ref": "#/definitions/TypeScriptMongoPluginConfig" },
@@ -3757,10 +3967,14 @@
         "typescript-urql": { "$ref": "#/definitions/UrqlRawPluginConfig" },
         "typescript-react-apollo": { "$ref": "#/definitions/ReactApolloRawPluginConfig" },
         "typescript-vue-apollo": { "$ref": "#/definitions/VueApolloRawPluginConfig" },
-        "typescript-vue-apollo-smart-ops": { "$ref": "#/definitions/VueApolloSmartOpsRawPluginConfig" },
+        "typescript-vue-apollo-smart-ops": {
+          "$ref": "#/definitions/VueApolloSmartOpsRawPluginConfig"
+        },
         "typescript-vue-urql": { "$ref": "#/definitions/VueUrqlRawPluginConfig" },
         "typescript-stencil-apollo": { "$ref": "#/definitions/StencilApolloRawPluginConfig" },
-        "typescript-document-nodes": { "$ref": "#/definitions/TypeScriptDocumentNodesRawPluginConfig" },
+        "typescript-document-nodes": {
+          "$ref": "#/definitions/TypeScriptDocumentNodesRawPluginConfig"
+        },
         "typescript-msw": { "$ref": "#/definitions/MSWConfig" },
         "java-apollo-android": { "$ref": "#/definitions/JavaApolloAndroidPluginConfig" },
         "java-resolvers": { "$ref": "#/definitions/JavaResolversPluginRawConfig" },
@@ -3840,196 +4054,377 @@
       },
       "allOf": [
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "flutter-freezed" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/FlutterFreezedPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "flutter-freezed" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/FlutterFreezedPluginConfig" } }
+          }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-react-query" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-react-query" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/ReactQueryRawPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/ReactQueryRawPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-rtk-query" } } } },
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-rtk-query" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/RTKConfig" } } }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-generic-sdk" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-generic-sdk" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/RawGenericSdkPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/RawGenericSdkPluginConfig" } }
+          }
         },
         {
           "if": {
             "properties": {
-              "plugins": { "contains": { "type": "string", "const": "typescript-apollo-client-helpers" } }
+              "plugins": {
+                "contains": { "type": "string", "const": "typescript-apollo-client-helpers" }
+              }
             }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/ApolloClientHelpersConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/ApolloClientHelpersConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "add" } } } },
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "add" } } }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/AddPluginConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "time" } } } },
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "time" } } }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/TimePluginConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript" } } } },
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript" } } }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptPluginConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-operations" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptDocumentsPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-operations" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/TypeScriptDocumentsPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "c-sharp" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/CSharpResolversPluginRawConfig" } } }
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "c-sharp" } } }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/CSharpResolversPluginRawConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "c-sharp-operations" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/CSharpOperationsRawPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "c-sharp-operations" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/CSharpOperationsRawPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "schema-ast" } } } },
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "schema-ast" } } }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/SchemaASTConfig" } } }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-type-graphql" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-type-graphql" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeGraphQLPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/TypeGraphQLPluginConfig" } }
+          }
         },
         {
           "if": {
             "properties": {
-              "plugins": { "contains": { "type": "string", "const": "typescript-graphql-files-modules" } }
+              "plugins": {
+                "contains": { "type": "string", "const": "typescript-graphql-files-modules" }
+              }
             }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptFilesModulesPluginConfig" } } }
+          "then": {
+            "properties": {
+              "config": { "$ref": "#/definitions/TypeScriptFilesModulesPluginConfig" }
+            }
+          }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "named-operations-object" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "named-operations-object" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/NamedOperationsObjectPluginConfig" } } }
+          "then": {
+            "properties": {
+              "config": { "$ref": "#/definitions/NamedOperationsObjectPluginConfig" }
+            }
+          }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-graphql-request" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-graphql-request" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/RawGraphQLRequestPluginConfig" } } }
-        },
-        {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-mongodb" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptMongoPluginConfig" } } }
-        },
-        {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-resolvers" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptResolversPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/RawGraphQLRequestPluginConfig" } }
+          }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-apollo-angular" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-mongodb" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/ApolloAngularRawPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/TypeScriptMongoPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-nhost" } } } },
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-resolvers" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/TypeScriptResolversPluginConfig" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-apollo-angular" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/ApolloAngularRawPluginConfig" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-nhost" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/NhostPluginConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-urql" } } } },
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-urql" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/UrqlRawPluginConfig" } } }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-react-apollo" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-react-apollo" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/ReactApolloRawPluginConfig" } } }
-        },
-        {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-vue-apollo" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/VueApolloRawPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/ReactApolloRawPluginConfig" } }
+          }
         },
         {
           "if": {
             "properties": {
-              "plugins": { "contains": { "type": "string", "const": "typescript-vue-apollo-smart-ops" } }
+              "plugins": { "contains": { "type": "string", "const": "typescript-vue-apollo" } }
             }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/VueApolloSmartOpsRawPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/VueApolloRawPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-vue-urql" } } } },
+          "if": {
+            "properties": {
+              "plugins": {
+                "contains": { "type": "string", "const": "typescript-vue-apollo-smart-ops" }
+              }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/VueApolloSmartOpsRawPluginConfig" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-vue-urql" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/VueUrqlRawPluginConfig" } } }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-stencil-apollo" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-stencil-apollo" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/StencilApolloRawPluginConfig" } } }
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/StencilApolloRawPluginConfig" } }
+          }
         },
         {
           "if": {
-            "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-document-nodes" } } }
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-document-nodes" } }
+            }
           },
-          "then": { "properties": { "config": { "$ref": "#/definitions/TypeScriptDocumentNodesRawPluginConfig" } } }
+          "then": {
+            "properties": {
+              "config": { "$ref": "#/definitions/TypeScriptDocumentNodesRawPluginConfig" }
+            }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "typescript-msw" } } } },
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "typescript-msw" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/MSWConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "java-apollo-android" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/JavaApolloAndroidPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "java-apollo-android" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/JavaApolloAndroidPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "java-resolvers" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/JavaResolversPluginRawConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "java-resolvers" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/JavaResolversPluginRawConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "java" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/JavaResolversPluginRawConfig" } } }
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "java" } } }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/JavaResolversPluginRawConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "kotlin" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/KotlinResolversPluginRawConfig" } } }
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "kotlin" } } }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/KotlinResolversPluginRawConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "flow" } } } },
+          "if": {
+            "properties": { "plugins": { "contains": { "type": "string", "const": "flow" } } }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/FlowPluginConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "flow-resolvers" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/FlowResolversPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "flow-resolvers" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/FlowResolversPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "flow-operations" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/FlowDocumentsPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "flow-operations" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/FlowDocumentsPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "introspection" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/IntrospectionPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "introspection" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/IntrospectionPluginConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "fragment-matcher" } } } },
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "fragment-matcher" } }
+            }
+          },
           "then": { "properties": { "config": { "$ref": "#/definitions/FragmentMatcherConfig" } } }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "urql-introspection" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/UrqlIntrospectionConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "urql-introspection" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/UrqlIntrospectionConfig" } }
+          }
         },
         {
-          "if": { "properties": { "plugins": { "contains": { "type": "string", "const": "hasura-allow-list" } } } },
-          "then": { "properties": { "config": { "$ref": "#/definitions/HasuraAllowListPluginConfig" } } }
+          "if": {
+            "properties": {
+              "plugins": { "contains": { "type": "string", "const": "hasura-allow-list" } }
+            }
+          },
+          "then": {
+            "properties": { "config": { "$ref": "#/definitions/HasuraAllowListPluginConfig" } }
+          }
         }
       ]
     },
     "__type_1": {
       "type": "object",
-      "properties": { "buildGeneratesSection": { "type": "object" }, "prepareDocuments": { "type": "object" } }
+      "properties": {
+        "buildGeneratesSection": { "type": "object" },
+        "prepareDocuments": { "type": "object" }
+      }
     },
     "Types.OutputPreset": { "$ref": "#/definitions/__type_1" },
     "__type_2": { "type": "object", "additionalProperties": { "$ref": "#/definitions/T" } },
@@ -4076,7 +4471,9 @@
         { "$ref": "#/definitions/Types.HookFunction" },
         {
           "type": "array",
-          "items": { "anyOf": [{ "$ref": "#/definitions/Types.HookFunction" }, { "type": "string" }] }
+          "items": {
+            "anyOf": [{ "$ref": "#/definitions/Types.HookFunction" }, { "type": "string" }]
+          }
         },
         { "type": "string" }
       ]
@@ -4127,8 +4524,14 @@
       "items": {
         "type": "object",
         "properties": {
-          "name": { "description": "the name of the NPM package name you wish to look for", "type": "string" },
-          "identifier": { "description": "the tag identifier name you wish to look for", "type": "string" }
+          "name": {
+            "description": "the name of the NPM package name you wish to look for",
+            "type": "string"
+          },
+          "identifier": {
+            "description": "the tag identifier name you wish to look for",
+            "type": "string"
+          }
         }
       }
     },
@@ -4137,7 +4540,10 @@
       "type": "object",
       "properties": { "_value": {}, "value": { "type": "string" } }
     },
-    "UnionValueCase": { "enum": ["FreezedUnionCase.camel", "FreezedUnionCase.pascal"], "type": "string" },
+    "UnionValueCase": {
+      "enum": ["FreezedUnionCase.camel", "FreezedUnionCase.pascal"],
+      "type": "string"
+    },
     "TypeName": {
       "description": "represents a single valid GraphQL Type Name used in the GraphQL Schema provided",
       "type": "object",
@@ -4166,14 +4572,21 @@
       "additionalProperties": false,
       "type": "object",
       "properties": {
-        "enumValues": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn" }, { "type": "string" }] },
-        "typeNames": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn" }, { "type": "string" }] },
+        "enumValues": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn" }, { "type": "string" }]
+        },
+        "typeNames": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn" }, { "type": "string" }]
+        },
         "transformUnderscore": { "type": "boolean" }
       }
     },
     "ScalarsMap": {
       "description": "Scalars map or a string, a map between the GraphQL scalar name and the identifier that should be used",
-      "anyOf": [{ "type": "object", "additionalProperties": { "type": "string" } }, { "type": "string" }]
+      "anyOf": [
+        { "type": "object", "additionalProperties": { "type": "string" } },
+        { "type": "string" }
+      ]
     },
     "DocumentMode": {
       "enum": ["documentNode", "documentNodeImportFragments", "external", "graphQLTag", "string"],
@@ -4221,7 +4634,10 @@
         "arguments": { "$ref": "#/definitions/DeclarationKind" }
       }
     },
-    "DeclarationKind": { "enum": ["abstract class", "class", "interface", "type"], "type": "string" },
+    "DeclarationKind": {
+      "enum": ["abstract class", "class", "interface", "type"],
+      "type": "string"
+    },
     "__type_13": {
       "description": "A map between the GraphQL directive name and the identifier that should be used",
       "type": "object",
@@ -4235,7 +4651,10 @@
           "type": "object",
           "additionalProperties": {
             "anyOf": [
-              { "type": "object", "properties": { "input": { "type": "string" }, "output": { "type": "string" } } },
+              {
+                "type": "object",
+                "properties": { "input": { "type": "string" }, "output": { "type": "string" } }
+              },
               { "type": "string" }
             ]
           }
@@ -4256,8 +4675,12 @@
       "additionalProperties": false,
       "type": "object",
       "properties": {
-        "enumValues": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_1" }, { "type": "string" }] },
-        "typeNames": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_1" }, { "type": "string" }] },
+        "enumValues": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_1" }, { "type": "string" }]
+        },
+        "typeNames": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_1" }, { "type": "string" }]
+        },
         "transformUnderscore": { "type": "boolean" }
       }
     },
@@ -4285,7 +4708,10 @@
     "JsonAttributesSource": { "enum": ["Newtonsoft.Json", "System.Text.Json"], "type": "string" },
     "ScalarsMap_2": {
       "description": "Scalars map or a string, a map between the GraphQL scalar name and the identifier that should be used",
-      "anyOf": [{ "type": "object", "additionalProperties": { "type": "string" } }, { "type": "string" }]
+      "anyOf": [
+        { "type": "object", "additionalProperties": { "type": "string" } },
+        { "type": "string" }
+      ]
     },
     "NamingConvention_2": {
       "anyOf": [
@@ -4300,8 +4726,12 @@
       "additionalProperties": false,
       "type": "object",
       "properties": {
-        "enumValues": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_2" }, { "type": "string" }] },
-        "typeNames": { "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_2" }, { "type": "string" }] },
+        "enumValues": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_2" }, { "type": "string" }]
+        },
+        "typeNames": {
+          "anyOf": [{ "$ref": "#/definitions/NamingConventionFn_2" }, { "type": "string" }]
+        },
         "transformUnderscore": { "type": "boolean" }
       }
     },
@@ -4341,7 +4771,10 @@
         "arguments": { "$ref": "#/definitions/DeclarationKind_1" }
       }
     },
-    "DeclarationKind_1": { "enum": ["abstract class", "class", "interface", "type"], "type": "string" },
+    "DeclarationKind_1": {
+      "enum": ["abstract class", "class", "interface", "type"],
+      "type": "string"
+    },
     "__type_17": {
       "description": "A map between the GraphQL directive name and the identifier that should be used",
       "type": "object",
@@ -4359,7 +4792,10 @@
     },
     "ScalarsMap_3": {
       "description": "Scalars map or a string, a map between the GraphQL scalar name and the identifier that should be used",
-      "anyOf": [{ "type": "object", "additionalProperties": { "type": "string" } }, { "type": "string" }]
+      "anyOf": [
+        { "type": "object", "additionalProperties": { "type": "string" } },
+        { "type": "string" }
+      ]
     },
     "StencilComponentType": { "enum": ["class", "functional"], "type": "string" },
     "DocumentMode_2": {
@@ -4399,7 +4835,10 @@
         "arguments": { "$ref": "#/definitions/DeclarationKind_2" }
       }
     },
-    "DeclarationKind_2": { "enum": ["abstract class", "class", "interface", "type"], "type": "string" },
+    "DeclarationKind_2": {
+      "enum": ["abstract class", "class", "interface", "type"],
+      "type": "string"
+    },
     "__type_18": {
       "description": "A map between the GraphQL directive name and the identifier that should be used",
       "type": "object",
@@ -4424,7 +4863,10 @@
           "type": "object",
           "additionalProperties": true,
           "properties": {
-            "flutter-freezed": { "additionalProperties": false, "$ref": "#/definitions/FlutterFreezedPluginConfig" },
+            "flutter-freezed": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/FlutterFreezedPluginConfig"
+            },
             "@graphql-codegen/flutter-freezed": {
               "additionalProperties": false,
               "$ref": "#/definitions/FlutterFreezedPluginConfig"
@@ -4437,7 +4879,10 @@
               "additionalProperties": false,
               "$ref": "#/definitions/ReactQueryRawPluginConfig"
             },
-            "typescript-rtk-query": { "additionalProperties": false, "$ref": "#/definitions/RTKConfig" },
+            "typescript-rtk-query": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/RTKConfig"
+            },
             "@graphql-codegen/typescript-rtk-query": {
               "additionalProperties": false,
               "$ref": "#/definitions/RTKConfig"
@@ -4459,10 +4904,19 @@
               "$ref": "#/definitions/ApolloClientHelpersConfig"
             },
             "add": { "additionalProperties": false, "$ref": "#/definitions/AddPluginConfig" },
-            "@graphql-codegen/add": { "additionalProperties": false, "$ref": "#/definitions/AddPluginConfig" },
+            "@graphql-codegen/add": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/AddPluginConfig"
+            },
             "time": { "additionalProperties": false, "$ref": "#/definitions/TimePluginConfig" },
-            "@graphql-codegen/time": { "additionalProperties": false, "$ref": "#/definitions/TimePluginConfig" },
-            "typescript": { "additionalProperties": false, "$ref": "#/definitions/TypeScriptPluginConfig" },
+            "@graphql-codegen/time": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/TimePluginConfig"
+            },
+            "typescript": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/TypeScriptPluginConfig"
+            },
             "@graphql-codegen/typescript": {
               "additionalProperties": false,
               "$ref": "#/definitions/TypeScriptPluginConfig"
@@ -4475,7 +4929,10 @@
               "additionalProperties": false,
               "$ref": "#/definitions/TypeScriptDocumentsPluginConfig"
             },
-            "c-sharp": { "additionalProperties": false, "$ref": "#/definitions/CSharpResolversPluginRawConfig" },
+            "c-sharp": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/CSharpResolversPluginRawConfig"
+            },
             "@graphql-codegen/c-sharp": {
               "additionalProperties": false,
               "$ref": "#/definitions/CSharpResolversPluginRawConfig"
@@ -4488,8 +4945,14 @@
               "additionalProperties": false,
               "$ref": "#/definitions/CSharpOperationsRawPluginConfig"
             },
-            "schema-ast": { "additionalProperties": false, "$ref": "#/definitions/SchemaASTConfig" },
-            "@graphql-codegen/schema-ast": { "additionalProperties": false, "$ref": "#/definitions/SchemaASTConfig" },
+            "schema-ast": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/SchemaASTConfig"
+            },
+            "@graphql-codegen/schema-ast": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/SchemaASTConfig"
+            },
             "typescript-type-graphql": {
               "additionalProperties": false,
               "$ref": "#/definitions/TypeGraphQLPluginConfig"
@@ -4546,12 +5009,18 @@
               "additionalProperties": false,
               "$ref": "#/definitions/ApolloAngularRawPluginConfig"
             },
-            "typescript-nhost": { "additionalProperties": false, "$ref": "#/definitions/NhostPluginConfig" },
+            "typescript-nhost": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/NhostPluginConfig"
+            },
             "@graphql-codegen/typescript-nhost": {
               "additionalProperties": false,
               "$ref": "#/definitions/NhostPluginConfig"
             },
-            "typescript-urql": { "additionalProperties": false, "$ref": "#/definitions/UrqlRawPluginConfig" },
+            "typescript-urql": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/UrqlRawPluginConfig"
+            },
             "@graphql-codegen/typescript-urql": {
               "additionalProperties": false,
               "$ref": "#/definitions/UrqlRawPluginConfig"
@@ -4580,7 +5049,10 @@
               "additionalProperties": false,
               "$ref": "#/definitions/VueApolloSmartOpsRawPluginConfig"
             },
-            "typescript-vue-urql": { "additionalProperties": false, "$ref": "#/definitions/VueUrqlRawPluginConfig" },
+            "typescript-vue-urql": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/VueUrqlRawPluginConfig"
+            },
             "@graphql-codegen/typescript-vue-urql": {
               "additionalProperties": false,
               "$ref": "#/definitions/VueUrqlRawPluginConfig"
@@ -4602,7 +5074,10 @@
               "$ref": "#/definitions/TypeScriptDocumentNodesRawPluginConfig"
             },
             "typescript-msw": { "additionalProperties": false, "$ref": "#/definitions/MSWConfig" },
-            "@graphql-codegen/typescript-msw": { "additionalProperties": false, "$ref": "#/definitions/MSWConfig" },
+            "@graphql-codegen/typescript-msw": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/MSWConfig"
+            },
             "java-apollo-android": {
               "additionalProperties": false,
               "$ref": "#/definitions/JavaApolloAndroidPluginConfig"
@@ -4611,49 +5086,79 @@
               "additionalProperties": false,
               "$ref": "#/definitions/JavaApolloAndroidPluginConfig"
             },
-            "java-resolvers": { "additionalProperties": false, "$ref": "#/definitions/JavaResolversPluginRawConfig" },
+            "java-resolvers": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/JavaResolversPluginRawConfig"
+            },
             "@graphql-codegen/java-resolvers": {
               "additionalProperties": false,
               "$ref": "#/definitions/JavaResolversPluginRawConfig"
             },
-            "java": { "additionalProperties": false, "$ref": "#/definitions/JavaResolversPluginRawConfig" },
+            "java": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/JavaResolversPluginRawConfig"
+            },
             "@graphql-codegen/java": {
               "additionalProperties": false,
               "$ref": "#/definitions/JavaResolversPluginRawConfig"
             },
-            "kotlin": { "additionalProperties": false, "$ref": "#/definitions/KotlinResolversPluginRawConfig" },
+            "kotlin": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/KotlinResolversPluginRawConfig"
+            },
             "@graphql-codegen/kotlin": {
               "additionalProperties": false,
               "$ref": "#/definitions/KotlinResolversPluginRawConfig"
             },
             "flow": { "additionalProperties": false, "$ref": "#/definitions/FlowPluginConfig" },
-            "@graphql-codegen/flow": { "additionalProperties": false, "$ref": "#/definitions/FlowPluginConfig" },
-            "flow-resolvers": { "additionalProperties": false, "$ref": "#/definitions/FlowResolversPluginConfig" },
+            "@graphql-codegen/flow": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/FlowPluginConfig"
+            },
+            "flow-resolvers": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/FlowResolversPluginConfig"
+            },
             "@graphql-codegen/flow-resolvers": {
               "additionalProperties": false,
               "$ref": "#/definitions/FlowResolversPluginConfig"
             },
-            "flow-operations": { "additionalProperties": false, "$ref": "#/definitions/FlowDocumentsPluginConfig" },
+            "flow-operations": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/FlowDocumentsPluginConfig"
+            },
             "@graphql-codegen/flow-operations": {
               "additionalProperties": false,
               "$ref": "#/definitions/FlowDocumentsPluginConfig"
             },
-            "introspection": { "additionalProperties": false, "$ref": "#/definitions/IntrospectionPluginConfig" },
+            "introspection": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/IntrospectionPluginConfig"
+            },
             "@graphql-codegen/introspection": {
               "additionalProperties": false,
               "$ref": "#/definitions/IntrospectionPluginConfig"
             },
-            "fragment-matcher": { "additionalProperties": false, "$ref": "#/definitions/FragmentMatcherConfig" },
+            "fragment-matcher": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/FragmentMatcherConfig"
+            },
             "@graphql-codegen/fragment-matcher": {
               "additionalProperties": false,
               "$ref": "#/definitions/FragmentMatcherConfig"
             },
-            "urql-introspection": { "additionalProperties": false, "$ref": "#/definitions/UrqlIntrospectionConfig" },
+            "urql-introspection": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/UrqlIntrospectionConfig"
+            },
             "@graphql-codegen/urql-introspection": {
               "additionalProperties": false,
               "$ref": "#/definitions/UrqlIntrospectionConfig"
             },
-            "hasura-allow-list": { "additionalProperties": false, "$ref": "#/definitions/HasuraAllowListPluginConfig" },
+            "hasura-allow-list": {
+              "additionalProperties": false,
+              "$ref": "#/definitions/HasuraAllowListPluginConfig"
+            },
             "@graphql-codegen/hasura-allow-list": {
               "additionalProperties": false,
               "$ref": "#/definitions/HasuraAllowListPluginConfig"

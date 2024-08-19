@@ -1,12 +1,17 @@
 /* eslint-disable */
 import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -26,7 +31,9 @@ export type AllFilmsWithVariablesQuery199Query = {
     __typename?: 'FilmsConnection';
     edges?: Array<{
       __typename?: 'FilmsEdge';
-      node?: ({ __typename?: 'Film' } & { ' $fragmentRefs'?: { FilmItemFragment: FilmItemFragment } }) | null;
+      node?:
+        | ({ __typename?: 'Film' } & { ' $fragmentRefs'?: { FilmItemFragment: FilmItemFragment } })
+        | null;
     } | null> | null;
   } | null;
 };
@@ -45,7 +52,10 @@ export class TypedDocumentString<TResult, TVariables>
 {
   __apiType?: DocumentTypeDecoration<TResult, TVariables>['__apiType'];
 
-  constructor(private value: string, public __meta__?: Record<string, any>) {
+  constructor(
+    private value: string,
+    public __meta__?: Record<string, any>,
+  ) {
     super(value);
   }
 
@@ -62,7 +72,7 @@ export const FilmItemFragmentDoc = new TypedDocumentString(
   producers
 }
     `,
-  { fragmentName: 'FilmItem' }
+  { fragmentName: 'FilmItem' },
 ) as unknown as TypedDocumentString<FilmItemFragment, unknown>;
 export const AllFilmsWithVariablesQuery199Document = new TypedDocumentString(`
     query allFilmsWithVariablesQuery199($first: Int!) {
@@ -79,4 +89,7 @@ export const AllFilmsWithVariablesQuery199Document = new TypedDocumentString(`
   title
   releaseDate
   producers
-}`) as unknown as TypedDocumentString<AllFilmsWithVariablesQuery199Query, AllFilmsWithVariablesQuery199QueryVariables>;
+}`) as unknown as TypedDocumentString<
+  AllFilmsWithVariablesQuery199Query,
+  AllFilmsWithVariablesQuery199QueryVariables
+>;

@@ -1,5 +1,5 @@
-import { resolversTestingSchema } from '@graphql-codegen/testing';
 import { buildSchema } from 'graphql';
+import { resolversTestingSchema } from '@graphql-codegen/testing';
 import { plugin } from '../src/index.js';
 
 describe('TypeScript Resolvers Plugin - Interfaces', () => {
@@ -69,7 +69,7 @@ describe('TypeScript Resolvers Plugin - Interfaces', () => {
       resolversTestingSchema,
       [],
       { typesPrefix: 'I_', typesSuffix: '_Types' },
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     );
 
     expect(content.content).toBeSimilarStringTo(`

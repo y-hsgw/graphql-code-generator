@@ -1,6 +1,6 @@
 import '@graphql-codegen/testing';
-import { codegen } from '@graphql-codegen/core';
 import { parse } from 'graphql';
+import { codegen } from '@graphql-codegen/core';
 import { TypeScriptResolversPluginConfig } from '../src/config.js';
 import { plugin } from '../src/index.js';
 
@@ -581,7 +581,9 @@ describe('TypeScript Resolvers Plugin + Apollo Federation', () => {
         __resolveReference?: ReferenceResolver<Maybe<ResolversTypes['User']>, { __typename: 'User' } & GraphQLRecursivePick<UnwrappedObject<ParentType>, {"id":true}>, ContextType>;
       `);
       // but ID should not
-      expect(content).toBeSimilarStringTo(`id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>`);
+      expect(content).toBeSimilarStringTo(
+        `id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>`,
+      );
     });
   });
 });

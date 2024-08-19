@@ -1,6 +1,9 @@
-import { setupMockFilesystem, setupMockWatcher } from './watcher-test-helpers/setup-mock-watcher.js';
-import { assertBuildTriggers } from './watcher-test-helpers/assert-watcher-build-triggers.js';
 import { join } from 'path';
+import { assertBuildTriggers } from './watcher-test-helpers/assert-watcher-build-triggers.js';
+import {
+  setupMockFilesystem,
+  setupMockWatcher,
+} from './watcher-test-helpers/setup-mock-watcher.js';
 
 describe('Watch targets', () => {
   beforeEach(() => {
@@ -62,18 +65,24 @@ describe('Watch targets', () => {
   // This test uses manual assertions to make sure they're tested individually,
   // but note that `assertBuildTriggers` can do most of this work for you
   test('triggers a rebuild for basic case', async () => {
-    const { onWatchTriggered, dispatchChange, stopWatching, subscribeCallbackSpy, unsubscribeSpy, watchDirectory } =
-      await setupMockWatcher({
-        filepath: './foo/some-config.ts',
-        config: {
-          schema: './foo/something.ts',
-          generates: {
-            ['./foo/some-output.ts']: {
-              documents: ['./foo/bar/*.graphql'],
-            },
+    const {
+      onWatchTriggered,
+      dispatchChange,
+      stopWatching,
+      subscribeCallbackSpy,
+      unsubscribeSpy,
+      watchDirectory,
+    } = await setupMockWatcher({
+      filepath: './foo/some-config.ts',
+      config: {
+        schema: './foo/something.ts',
+        generates: {
+          ['./foo/some-output.ts']: {
+            documents: ['./foo/bar/*.graphql'],
           },
         },
-      });
+      },
+    });
 
     expect(watchDirectory).toBe(join(process.cwd(), 'foo'));
 
@@ -81,11 +90,15 @@ describe('Watch targets', () => {
     const shouldNotTriggerBuild = join(process.cwd(), './foo/bar/something.ts');
 
     await dispatchChange(shouldTriggerBuild);
-    expect(subscribeCallbackSpy).toHaveBeenLastCalledWith(undefined, [{ path: shouldTriggerBuild, type: 'update' }]);
+    expect(subscribeCallbackSpy).toHaveBeenLastCalledWith(undefined, [
+      { path: shouldTriggerBuild, type: 'update' },
+    ]);
     expect(onWatchTriggered).toHaveBeenLastCalledWith('update', shouldTriggerBuild);
 
     await dispatchChange(shouldNotTriggerBuild);
-    expect(subscribeCallbackSpy).toHaveBeenLastCalledWith(undefined, [{ path: shouldNotTriggerBuild, type: 'update' }]);
+    expect(subscribeCallbackSpy).toHaveBeenLastCalledWith(undefined, [
+      { path: shouldNotTriggerBuild, type: 'update' },
+    ]);
     expect(onWatchTriggered).not.toHaveBeenLastCalledWith('update', shouldNotTriggerBuild);
     expect(onWatchTriggered).toHaveBeenCalledTimes(1);
 
@@ -448,7 +461,10 @@ describe('Watch targets', () => {
           ['./fuzz/some-other-output.ts']: {
             documents: './fuzz/some-other-bar/*.graphql',
             watchPattern: ['!fuzz/some-other-bar/schemas/never-watch-schema.graphql'],
-            schema: ['./fuzz/some-other-bar/schemas/*.graphql', '!fuzz/some-other-bar/schemas/never-schema.graphql'],
+            schema: [
+              './fuzz/some-other-bar/schemas/*.graphql',
+              '!fuzz/some-other-bar/schemas/never-schema.graphql',
+            ],
           },
           // match in one local group, negation in another local group, should still match
           ['./fuzz/alphabet/types-no-sigma.ts']: {

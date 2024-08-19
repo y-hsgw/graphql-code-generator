@@ -1,3 +1,4 @@
+import { DocumentNode } from 'graphql';
 import * as addPlugin from '@graphql-codegen/add';
 import * as gqlTagPlugin from '@graphql-codegen/gql-tag-operations';
 import type { PluginFunction, Types } from '@graphql-codegen/plugin-helpers';
@@ -5,7 +6,6 @@ import * as typedDocumentNodePlugin from '@graphql-codegen/typed-document-node';
 import * as typescriptPlugin from '@graphql-codegen/typescript';
 import * as typescriptOperationPlugin from '@graphql-codegen/typescript-operations';
 import { ClientSideBaseVisitor, DocumentMode } from '@graphql-codegen/visitor-plugin-common';
-import { DocumentNode } from 'graphql';
 import * as fragmentMaskingPlugin from './fragment-masking-plugin.js';
 import { generateDocumentHash, normalizeAndPrintDocumentNode } from './persisted-documents.js';
 import { processSources } from './process-sources.js';
@@ -100,17 +100,23 @@ export type ClientPresetConfig = {
 const isOutputFolderLike = (baseOutputDir: string) => baseOutputDir.endsWith('/');
 
 export const preset: Types.OutputPreset<ClientPresetConfig> = {
-  prepareDocuments: (outputFilePath, outputSpecificDocuments) => [...outputSpecificDocuments, `!${outputFilePath}`],
+  prepareDocuments: (outputFilePath, outputSpecificDocuments) => [
+    ...outputSpecificDocuments,
+    `!${outputFilePath}`,
+  ],
   buildGeneratesSection: options => {
     if (!isOutputFolderLike(options.baseOutputDir)) {
       throw new Error(
-        '[client-preset] target output should be a directory, ex: "src/gql/". Make sure you add "/" at the end of the directory path'
+        '[client-preset] target output should be a directory, ex: "src/gql/". Make sure you add "/" at the end of the directory path',
       );
     }
 
-    if (options.plugins.length > 0 && Object.keys(options.plugins).some(p => p.startsWith('typescript'))) {
+    if (
+      options.plugins.length > 0 &&
+      Object.keys(options.plugins).some(p => p.startsWith('typescript'))
+    ) {
       throw new Error(
-        '[client-preset] providing typescript-based `plugins` with `preset: "client" leads to duplicated generated types'
+        '[client-preset] providing typescript-based `plugins` with `preset: "client" leads to duplicated generated types',
       );
     }
     const isPersistedOperations = !!options.presetConfig?.persistedDocuments;
@@ -134,7 +140,12 @@ export const preset: Types.OutputPreset<ClientPresetConfig> = {
       documentMode: options.config.documentMode,
     };
 
-    const visitor = new ClientSideBaseVisitor(options.schemaAst!, [], options.config, options.config);
+    const visitor = new ClientSideBaseVisitor(
+      options.schemaAst!,
+      [],
+      options.config,
+      options.config,
+    );
     let fragmentMaskingConfig: FragmentMaskingConfig | null = null;
 
     if (typeof options?.presetConfig?.fragmentMasking === 'object') {
@@ -337,7 +348,11 @@ export const preset: Types.OutputPreset<ClientPresetConfig> = {
                   plugin: async () => {
                     await tdnFinished.promise;
                     return {
-                      content: JSON.stringify(Object.fromEntries(persistedDocumentsMap.entries()), null, 2),
+                      content: JSON.stringify(
+                        Object.fromEntries(persistedDocumentsMap.entries()),
+                        null,
+                        2,
+                      ),
                     };
                   },
                 },

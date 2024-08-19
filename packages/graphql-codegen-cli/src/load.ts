@@ -1,4 +1,5 @@
 import { extname, join } from 'path';
+import { GraphQLSchema } from 'graphql';
 import { Types } from '@graphql-codegen/plugin-helpers';
 import { ApolloEngineLoader } from '@graphql-tools/apollo-engine-loader';
 import { CodeFileLoader } from '@graphql-tools/code-file-loader';
@@ -13,7 +14,6 @@ import {
 } from '@graphql-tools/load';
 import { PrismaLoader } from '@graphql-tools/prisma-loader';
 import { UrlLoader } from '@graphql-tools/url-loader';
-import { GraphQLSchema } from 'graphql';
 
 export const defaultSchemaLoadOptions = {
   assumeValidSDL: true,
@@ -29,7 +29,7 @@ export const defaultDocumentsLoadOptions = {
 
 export async function loadSchema(
   schemaPointers: UnnormalizedTypeDefPointer,
-  config: Types.Config
+  config: Types.Config,
 ): Promise<GraphQLSchema> {
   try {
     const loaders = [
@@ -67,14 +67,14 @@ export async function loadSchema(
 
         Try to use one of above options and run codegen again.
 
-      `
+      `,
     );
   }
 }
 
 export async function loadDocuments(
   documentPointers: UnnormalizedTypeDefPointer | UnnormalizedTypeDefPointer[],
-  config: Types.Config
+  config: Types.Config,
 ): Promise<Types.DocumentFile[]> {
   const loaders = [
     new CodeFileLoader({

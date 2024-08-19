@@ -1,6 +1,6 @@
-import { resolversTestingSchema, resolversTestingValidate } from '@graphql-codegen/testing';
 import { buildSchema } from 'graphql';
 import type { Types } from '@graphql-codegen/plugin-helpers';
+import { resolversTestingSchema, resolversTestingValidate } from '@graphql-codegen/testing';
 import { plugin } from '../src/index.js';
 
 describe('TypeScript Resolvers Plugin - config.avoidOptionals', () => {
@@ -9,7 +9,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals', () => {
       resolversTestingSchema,
       [],
       { avoidOptionals: true },
-      { outputFile: '' }
+      { outputFile: '' },
     )) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -107,7 +107,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals', () => {
           resolvers: false,
         },
       } as any,
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     expect(output.content).toBeSimilarStringTo(`
@@ -145,7 +145,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals', () => {
           resolvers: false,
         },
       } as any,
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     expect(output.content).toBeSimilarStringTo(`
@@ -187,7 +187,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals', () => {
         avoidOptionals: false,
         maybeValue: 'T | undefined',
       } as any,
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     // filter should be non-optional
@@ -226,7 +226,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals - query, mutation,
       testSchema,
       [],
       { avoidOptionals: { query: true } },
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     expect(output.content).toBeSimilarStringTo(`
@@ -256,7 +256,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals - query, mutation,
       testSchema,
       [],
       { avoidOptionals: { mutation: true } },
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     expect(output.content).toBeSimilarStringTo(`
@@ -286,7 +286,7 @@ describe('TypeScript Resolvers Plugin - config.avoidOptionals - query, mutation,
       testSchema,
       [],
       { avoidOptionals: { subscription: true } },
-      { outputFile: 'graphql.ts' }
+      { outputFile: 'graphql.ts' },
     )) as Types.ComplexPluginOutput;
 
     expect(output.content).toBeSimilarStringTo(`

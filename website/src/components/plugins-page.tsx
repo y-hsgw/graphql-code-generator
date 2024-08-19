@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
-import { fetchPackageInfo, MarketplaceSearch, useData } from '@theguild/components';
 import { compareDesc } from 'date-fns';
 import { CategoryToPackages } from '@/category-to-packages.mjs';
 import { ALL_TAGS, Icon, icons, PACKAGES } from '@/lib/plugins';
+import { fetchPackageInfo, MarketplaceSearch, useData } from '@theguild/components';
 
 type Plugin = {
   title: string;
@@ -20,8 +20,15 @@ export const getStaticProps = async () => {
   const categoryEntries = Object.entries(CategoryToPackages);
   const plugins: Plugin[] = await Promise.all(
     Object.entries(PACKAGES).map(async ([identifier, { npmPackage, title, icon, tags }]) => {
-      const { readme, createdAt, updatedAt, description, weeklyNPMDownloads = 0 } = await fetchPackageInfo(npmPackage);
-      const [category] = categoryEntries.find(([, pluginName]) => pluginName.includes(identifier)) || [];
+      const {
+        readme,
+        createdAt,
+        updatedAt,
+        description,
+        weeklyNPMDownloads = 0,
+      } = await fetchPackageInfo(npmPackage);
+      const [category] =
+        categoryEntries.find(([, pluginName]) => pluginName.includes(identifier)) || [];
 
       return {
         title,
@@ -34,7 +41,7 @@ export const getStaticProps = async () => {
         icon,
         tags,
       };
-    })
+    }),
   );
   return {
     props: {
@@ -70,12 +77,12 @@ export function PluginsPage() {
           weeklyNPMDownloads: plugin.weeklyNPMDownloads,
         };
       }),
-    [plugins]
+    [plugins],
   );
 
   const recentlyUpdatedItems = useMemo(
     () => [...marketplaceItems].sort((a, b) => compareDesc(new Date(a.update), new Date(b.update))),
-    [marketplaceItems]
+    [marketplaceItems],
   );
 
   const trendingItems = useMemo(
@@ -88,7 +95,7 @@ export function PluginsPage() {
 
           return bMonthlyDownloads - aMonthlyDownloads;
         }),
-    [marketplaceItems]
+    [marketplaceItems],
   );
 
   return (

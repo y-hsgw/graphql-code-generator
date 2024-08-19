@@ -1,13 +1,12 @@
-import { join, isAbsolute, relative, resolve, sep } from 'path';
-import ParcelWatcher from '@parcel/watcher';
+import { isAbsolute, join, relative, resolve, sep } from 'path';
 import isGlob from 'is-glob';
-
-import type { setupMockWatcher } from './setup-mock-watcher.js';
+import ParcelWatcher from '@parcel/watcher';
 import {
   formatBuildTriggerErrorPrelude,
   formatErrorGlobNotIgnoredByParcelWatcher,
   formatErrorPathNotIgnoredByParcelWatcher,
 } from './format-watcher-assertion-errors';
+import type { setupMockWatcher } from './setup-mock-watcher.js';
 
 /**
  * Helper function for asserting that multiple paths did or did not trigger a build,
@@ -101,7 +100,7 @@ export const assertBuildTriggers = async (
      * encounters an error.
      */
     keepWatching?: true;
-  }
+  },
 ) => {
   const {
     onWatchTriggered,
@@ -130,10 +129,16 @@ export const assertBuildTriggers = async (
 
     for (const relPath of shouldNotTriggerBuild) {
       const path = join(process.cwd(), relPath);
-      await assertDidNotTriggerBuild(path, { dispatchChange, subscribeCallbackSpy, onWatchTriggered });
+      await assertDidNotTriggerBuild(path, {
+        dispatchChange,
+        subscribeCallbackSpy,
+        onWatchTriggered,
+      });
     }
 
-    expect(subscribeCallbackSpy).toHaveBeenCalledTimes(shouldTriggerBuild.length + shouldNotTriggerBuild.length);
+    expect(subscribeCallbackSpy).toHaveBeenCalledTimes(
+      shouldTriggerBuild.length + shouldNotTriggerBuild.length,
+    );
     expect(onWatchTriggered).toHaveBeenCalledTimes(shouldTriggerBuild.length);
 
     const ignore = subscribeOpts.ignore ?? [];
@@ -144,12 +149,14 @@ export const assertBuildTriggers = async (
             [
               `expected path, got glob: ${relPathFromCwd}`,
               'pass globs to globsWouldBeIgnoredByParcelWatcher, not pathsWouldBeIgnoredByParcelWatcher',
-            ].join('\n')
+            ].join('\n'),
           );
         }
 
         if (isAbsolute(relPathFromCwd)) {
-          throw new Error('pathsWouldBeIgnoredByParcelWatcher should only include relative paths from cwd');
+          throw new Error(
+            'pathsWouldBeIgnoredByParcelWatcher should only include relative paths from cwd',
+          );
         }
         assertParcelWouldIgnorePath(relPathFromCwd, { watchDirectory, ignore });
       }
@@ -162,7 +169,7 @@ export const assertBuildTriggers = async (
             [
               `expected glob, got path (or something that is not a glob): ${expectedIgnoredGlob}`,
               'pass paths to pathsWouldBeIgnoredByParcelWatcher, not globsWouldBeIgnoredByParcelWatcher',
-            ].join('\n')
+            ].join('\n'),
           );
         }
 
@@ -187,7 +194,10 @@ export const assertBuildTriggers = async (
 const assertParcelWouldIgnoreGlob = (
   /** Glob pattern expected to exist in {@link ParcelWatcher.Options}`["ignore"]` */
   expectToIgnoreGlob: string,
-  { ignore, watchDirectory }: { watchDirectory: string; ignore: Required<ParcelWatcher.Options>['ignore'] }
+  {
+    ignore,
+    watchDirectory,
+  }: { watchDirectory: string; ignore: Required<ParcelWatcher.Options>['ignore'] },
 ) => {
   const parcelIgnoredGlobs = ignore.filter(pathOrGlob => isGlob(pathOrGlob));
 
@@ -226,7 +236,7 @@ const assertParcelWouldIgnorePath = (
   }: {
     watchDirectory: string;
     ignore: Required<ParcelWatcher.Options>['ignore'];
-  }
+  },
 ) => {
   const parcelIgnoredPaths = ignore.filter(pathOrGlob => !isGlob(pathOrGlob));
 
@@ -237,7 +247,11 @@ const assertParcelWouldIgnorePath = (
       : relOrAbsolutePath;
 
     // ...but we want to assert relative from cwd
-    const absPath = resolve(process.cwd(), relative(process.cwd(), watchDirectory), relPathFromWatchDir);
+    const absPath = resolve(
+      process.cwd(),
+      relative(process.cwd(), watchDirectory),
+      relPathFromWatchDir,
+    );
     const relPathFromCwd = relative(process.cwd(), absPath);
 
     // NOTE: This will not include "./"
@@ -248,7 +262,7 @@ const assertParcelWouldIgnorePath = (
   const hasMatch = parcelIgnoredPathsRelativeFromCwd.some(
     ignorePathRelFromCwd =>
       expectToIgnoreRelPathFromCwd === ignorePathRelFromCwd ||
-      expectToIgnoreRelPathFromCwd === `.${sep}${ignorePathRelFromCwd}`
+      expectToIgnoreRelPathFromCwd === `.${sep}${ignorePathRelFromCwd}`,
   );
 
   try {
@@ -276,7 +290,7 @@ type MockWatcherAssertionHelpers = Pick<
  */
 const assertTriggeredBuild = async (
   /** Absolute path */ path: string,
-  { dispatchChange, subscribeCallbackSpy, onWatchTriggered }: MockWatcherAssertionHelpers
+  { dispatchChange, subscribeCallbackSpy, onWatchTriggered }: MockWatcherAssertionHelpers,
 ) => {
   try {
     await dispatchChange(path);
@@ -294,7 +308,7 @@ const assertTriggeredBuild = async (
  */
 const assertDidNotTriggerBuild = async (
   /** Absolute path */ path: string,
-  { dispatchChange, subscribeCallbackSpy, onWatchTriggered }: MockWatcherAssertionHelpers
+  { dispatchChange, subscribeCallbackSpy, onWatchTriggered }: MockWatcherAssertionHelpers,
 ) => {
   try {
     await dispatchChange(path);

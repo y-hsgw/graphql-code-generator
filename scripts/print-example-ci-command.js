@@ -18,7 +18,7 @@ const result = packageJSON.reduce(
     res.commands.push(`yarn workspace ${name} run ${process.argv[2]}`);
     return res;
   },
-  { ignored: [], commands: [] }
+  { ignored: [], commands: [] },
 );
 
 if (result.ignored.length > 0) {

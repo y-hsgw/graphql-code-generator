@@ -1,4 +1,3 @@
-import { astFromObjectType, getRootTypeNames, MapperKind, mapSchema } from '@graphql-tools/utils';
 import {
   DefinitionNode,
   DirectiveNode,
@@ -13,6 +12,7 @@ import {
   StringValueNode,
 } from 'graphql';
 import merge from 'lodash/merge.js';
+import { astFromObjectType, getRootTypeNames, MapperKind, mapSchema } from '@graphql-tools/utils';
 import { oldVisit } from './index.js';
 import { getBaseType } from './utils.js';
 
@@ -129,8 +129,18 @@ export class ApolloFederation {
    * Decides if field should not be generated
    * @param data
    */
-  skipField({ fieldNode, parentType }: { fieldNode: FieldDefinitionNode; parentType: GraphQLNamedType }): boolean {
-    if (!this.enabled || !isObjectType(parentType) || !isFederationObjectType(parentType, this.schema)) {
+  skipField({
+    fieldNode,
+    parentType,
+  }: {
+    fieldNode: FieldDefinitionNode;
+    parentType: GraphQLNamedType;
+  }): boolean {
+    if (
+      !this.enabled ||
+      !isObjectType(parentType) ||
+      !isFederationObjectType(parentType, this.schema)
+    ) {
       return false;
     }
 
@@ -159,7 +169,8 @@ export class ApolloFederation {
       this.enabled &&
       isObjectType(parentType) &&
       isFederationObjectType(parentType, this.schema) &&
-      (isTypeExtension(parentType, this.schema) || fieldNode.name.value === resolveReferenceFieldName)
+      (isTypeExtension(parentType, this.schema) ||
+        fieldNode.name.value === resolveReferenceFieldName)
     ) {
       const keys = getDirectivesByName('key', parentType);
 
@@ -192,7 +203,10 @@ export class ApolloFederation {
     return parentTypeSignature;
   }
 
-  private isExternalAndNotProvided(fieldNode: FieldDefinitionNode, objectType: GraphQLObjectType): boolean {
+  private isExternalAndNotProvided(
+    fieldNode: FieldDefinitionNode,
+    objectType: GraphQLObjectType,
+  ): boolean {
     return this.isExternal(fieldNode) && !this.hasProvides(objectType, fieldNode);
   }
 
@@ -200,8 +214,12 @@ export class ApolloFederation {
     return getDirectivesByName('external', node).length > 0;
   }
 
-  private hasProvides(objectType: ObjectTypeDefinitionNode | GraphQLObjectType, node: FieldDefinitionNode): boolean {
-    const fields = this.providesMap[isObjectType(objectType) ? objectType.name : objectType.name.value];
+  private hasProvides(
+    objectType: ObjectTypeDefinitionNode | GraphQLObjectType,
+    node: FieldDefinitionNode,
+  ): boolean {
+    const fields =
+      this.providesMap[isObjectType(objectType) ? objectType.name : objectType.name.value];
 
     if (fields?.length) {
       return fields.includes(node.name.value);
@@ -240,7 +258,7 @@ export class ApolloFederation {
         Document(node) {
           return node.definitions.find(
             (def: DefinitionNode): def is OperationDefinitionNode =>
-              def.kind === 'OperationDefinition' && def.operation === 'query'
+              def.kind === 'OperationDefinition' && def.operation === 'query',
           ).selectionSet;
         },
       },
@@ -275,7 +293,10 @@ export class ApolloFederation {
  * Checks if Object Type is involved in Federation. Based on `@key` directive
  * @param node Type
  */
-function isFederationObjectType(node: ObjectTypeDefinitionNode | GraphQLObjectType, schema: GraphQLSchema): boolean {
+function isFederationObjectType(
+  node: ObjectTypeDefinitionNode | GraphQLObjectType,
+  schema: GraphQLSchema,
+): boolean {
   const {
     name: { value: name },
     directives,
@@ -296,7 +317,7 @@ function isFederationObjectType(node: ObjectTypeDefinitionNode | GraphQLObjectTy
  */
 function getDirectivesByName(
   name: string,
-  node: ObjectTypeDefinitionNode | GraphQLObjectType | FieldDefinitionNode
+  node: ObjectTypeDefinitionNode | GraphQLObjectType | FieldDefinitionNode,
 ): readonly DirectiveNode[] {
   let astNode: ObjectTypeDefinitionNode | FieldDefinitionNode;
 
@@ -314,7 +335,10 @@ function getDirectivesByName(
  * Based on if any of its fields contain the `@external` directive
  * @param node Type
  */
-function isTypeExtension(node: ObjectTypeDefinitionNode | GraphQLObjectType, schema: GraphQLSchema): boolean {
+function isTypeExtension(
+  node: ObjectTypeDefinitionNode | GraphQLObjectType,
+  schema: GraphQLSchema,
+): boolean {
   const definition = isObjectType(node) ? node.astNode || astFromObjectType(node, schema) : node;
   return definition.fields?.some(field => getDirectivesByName('external', field).length);
 }

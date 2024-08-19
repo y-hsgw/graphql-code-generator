@@ -1,9 +1,17 @@
 import { join } from 'path';
+import {
+  buildASTSchema,
+  buildSchema,
+  GraphQLObjectType,
+  Kind,
+  OperationDefinitionNode,
+  parse,
+  print,
+} from 'graphql';
+import { Types } from '@graphql-codegen/plugin-helpers';
 import { useMonorepo } from '@graphql-codegen/testing';
 import { mergeTypeDefs } from '@graphql-tools/merge';
-import { buildASTSchema, buildSchema, GraphQLObjectType, parse, print, OperationDefinitionNode, Kind } from 'graphql';
 import { createContext, executeCodegen } from '../src/index.js';
-import { Types } from '@graphql-codegen/plugin-helpers';
 
 const SHOULD_NOT_THROW_STRING = 'SHOULD_NOT_THROW';
 const SIMPLE_TEST_SCHEMA = `type MyType { f: String } type Query { f: String }`;
@@ -295,7 +303,10 @@ describe('Codegen Executor', () => {
     it('should handle gql tag in ts with with nested fragment', async () => {
       const result = await executeCodegen({
         schema: ['./tests/test-documents/schema.graphql'],
-        documents: ['./tests/test-documents/my-fragment.ts', './tests/test-documents/query-with-my-fragment.ts'],
+        documents: [
+          './tests/test-documents/my-fragment.ts',
+          './tests/test-documents/query-with-my-fragment.ts',
+        ],
         generates: {
           'out1.ts': {
             plugins: ['typescript', 'typescript-operations'],
@@ -309,7 +320,10 @@ describe('Codegen Executor', () => {
     it('should handle gql tag in ts with with multiple nested fragment', async () => {
       const result = await executeCodegen({
         schema: ['./tests/test-documents/schema.graphql'],
-        documents: ['./tests/test-documents/my-fragment.ts', './tests/test-documents/query-with-my-fragment.ts'],
+        documents: [
+          './tests/test-documents/my-fragment.ts',
+          './tests/test-documents/query-with-my-fragment.ts',
+        ],
         generates: {
           'out1.ts': {
             plugins: ['typescript', 'typescript-operations'],
@@ -324,7 +338,10 @@ describe('Codegen Executor', () => {
     it('should handle gql tag in js with with nested fragment', async () => {
       const result = await executeCodegen({
         schema: ['./tests/test-documents/schema.graphql'],
-        documents: ['./tests/test-documents/js-query-with-my-fragment.js', './tests/test-documents/js-my-fragment.js'],
+        documents: [
+          './tests/test-documents/js-query-with-my-fragment.js',
+          './tests/test-documents/js-my-fragment.js',
+        ],
         generates: {
           'out1.ts': {
             plugins: ['typescript', 'typescript-operations'],
@@ -600,7 +617,10 @@ describe('Codegen Executor', () => {
         schema: SIMPLE_TEST_SCHEMA,
         generates: {
           'out1.ts': {
-            plugins: ['./tests/custom-plugins/extends-schema.js', './tests/custom-plugins/checks-extended-schema.js'],
+            plugins: [
+              './tests/custom-plugins/extends-schema.js',
+              './tests/custom-plugins/checks-extended-schema.js',
+            ],
           },
         },
       });
@@ -639,7 +659,7 @@ describe('Codegen Executor', () => {
               id: String @id
             }
           `),
-        ])
+        ]),
       );
 
       expect(merged.getDirectives().map(({ name }) => name)).toContainEqual('id');
@@ -665,12 +685,16 @@ describe('Codegen Executor', () => {
               query: Query
             }
           `),
-        ])
+        ]),
       );
 
-      expect(merged.getType('Post').astNode.directives.map(({ name }) => name.value)).toContainEqual('test');
       expect(
-        (merged.getType('Post') as GraphQLObjectType).getFields().id.astNode.directives.map(({ name }) => name.value)
+        merged.getType('Post').astNode.directives.map(({ name }) => name.value),
+      ).toContainEqual('test');
+      expect(
+        (merged.getType('Post') as GraphQLObjectType)
+          .getFields()
+          .id.astNode.directives.map(({ name }) => name.value),
       ).toContainEqual('id');
     });
 
@@ -896,7 +920,9 @@ describe('Codegen Executor', () => {
 
         throw new Error(SHOULD_NOT_THROW_STRING);
       } catch (error) {
-        expect(error.message).toContain('Unable to find any GraphQL type definitions for the following pointers');
+        expect(error.message).toContain(
+          'Unable to find any GraphQL type definitions for the following pointers',
+        );
       }
     });
 
@@ -962,7 +988,9 @@ describe('Codegen Executor', () => {
         },
       });
     } catch (error) {
-      expect(error.message).toContain('Failed to load schema from http://www.dummyschema.com/graphql');
+      expect(error.message).toContain(
+        'Failed to load schema from http://www.dummyschema.com/graphql',
+      );
     }
     expect((global as any).CUSTOM_FETCH_FN_CALLED).toBeTruthy();
   });
@@ -970,7 +998,10 @@ describe('Codegen Executor', () => {
   it('should evaluate glob expressions correctly', async () => {
     try {
       await executeCodegen({
-        schema: ['./tests/test-documents/*schema.graphql', '!./tests/test-documents/invalid-schema.graphql'],
+        schema: [
+          './tests/test-documents/*schema.graphql',
+          '!./tests/test-documents/invalid-schema.graphql',
+        ],
         documents: [
           './tests/test-documents/*.graphql',
           '!./tests/test-documents/invalid-*.graphql',
@@ -996,7 +1027,10 @@ describe('Codegen Executor', () => {
         documents: `query root { f }`,
         generates: {
           'out1.ts': {
-            plugins: ['./tests/custom-plugins/extends-schema.js', './tests/custom-plugins/checks-extended-schema.js'],
+            plugins: [
+              './tests/custom-plugins/extends-schema.js',
+              './tests/custom-plugins/checks-extended-schema.js',
+            ],
           },
         },
       });
@@ -1147,9 +1181,9 @@ describe('Codegen Executor', () => {
     });
 
     it('Should allow users to set config', async () => {
-      const generateDocumentTransform: (config: { queryName: string }) => Types.DocumentTransformObject = ({
-        queryName,
-      }) => {
+      const generateDocumentTransform: (config: {
+        queryName: string;
+      }) => Types.DocumentTransformObject = ({ queryName }) => {
         return {
           transform: ({ documents }) => {
             const newDocuments = [
@@ -1267,7 +1301,9 @@ describe('Codegen Executor', () => {
         throw new Error(SHOULD_NOT_THROW_STRING);
       } catch (e) {
         expect(e.message).not.toBe(SHOULD_NOT_THROW_STRING);
-        expect(e.message).toContain('DocumentTransform "the element at index 0 of the documentTransforms" failed');
+        expect(e.message).toContain(
+          'DocumentTransform "the element at index 0 of the documentTransforms" failed',
+        );
         expect(e.message).toContain('Something Wrong!');
       }
     });

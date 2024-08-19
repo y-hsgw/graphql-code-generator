@@ -7,7 +7,10 @@ export default defineConfig({
   plugins: [
     react({
       plugins: [
-        ['@graphql-codegen/client-preset-swc-plugin', { artifactDirectory: './src/gql', gqlTagName: 'graphql' }],
+        [
+          '@graphql-codegen/client-preset-swc-plugin',
+          { artifactDirectory: './src/gql', gqlTagName: 'graphql' },
+        ],
       ],
     }),
   ],

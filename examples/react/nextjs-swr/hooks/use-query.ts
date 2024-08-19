@@ -1,14 +1,15 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { buildHTTPExecutor } from '@graphql-tools/executor-http';
-import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 import { ASTNode, ExecutionResult, Kind, OperationDefinitionNode } from 'graphql';
 import useSWR from 'swr';
+import { buildHTTPExecutor } from '@graphql-tools/executor-http';
+import { TypedDocumentNode } from '@graphql-typed-document-node/core';
 
 const executor = buildHTTPExecutor({
   endpoint: 'https://swapi-graphql.netlify.app/.netlify/functions/index',
 });
 
-const isOperationDefinition = (def: ASTNode): def is OperationDefinitionNode => def.kind === Kind.OPERATION_DEFINITION;
+const isOperationDefinition = (def: ASTNode): def is OperationDefinitionNode =>
+  def.kind === Kind.OPERATION_DEFINITION;
 
 export function useGraphQL<TResult, TVariables>(
   document: TypedDocumentNode<TResult, TVariables>,
@@ -24,6 +25,6 @@ export function useGraphQL<TResult, TVariables>(
       executor({
         document,
         variables,
-      }) as Promise<ExecutionResult<TResult>>
+      }) as Promise<ExecutionResult<TResult>>,
   );
 }

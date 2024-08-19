@@ -1,9 +1,9 @@
 import { dirname, join } from 'path';
+import makeDir from 'make-dir';
 import { Types } from '@graphql-codegen/plugin-helpers';
 import { useMonorepo } from '@graphql-codegen/testing';
-import makeDir from 'make-dir';
-import { generate } from '../src/generate-and-save.js';
 import { createContext } from '../src/config.js';
+import { generate } from '../src/generate-and-save.js';
 import * as fs from '../src/utils/file-system.js';
 
 const SIMPLE_TEST_SCHEMA = `type MyType { f: String } type Query { f: String }`;
@@ -38,7 +38,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -67,7 +67,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -110,7 +110,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -138,7 +138,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -168,7 +168,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -190,7 +190,7 @@ describe('generate-and-save', () => {
     import gql from 'graphql-tag';
     const MyQuery = gql\`query MyQuery { f }\`;
   `,
-      'utf8'
+      'utf8',
     );
     const generateOnce: () => Promise<Types.FileOutput[]> = () =>
       generate(
@@ -203,7 +203,7 @@ describe('generate-and-save', () => {
             },
           },
         },
-        true
+        true,
       );
     const [firstOutput] = await generateOnce();
     fs.writeFileSync(firstOutput.filename, firstOutput.content);
@@ -222,7 +222,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);
@@ -246,7 +246,7 @@ describe('generate-and-save', () => {
           },
         },
       },
-      true
+      true,
     );
 
     expect(output.length).toBe(1);

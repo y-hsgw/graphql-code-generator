@@ -1,23 +1,13 @@
 {
   "name": "website",
   "version": "1.17.7",
-  "private": true,
   "type": "module",
+  "private": true,
   "scripts": {
-    "start": "next start",
     "build": "yarn generate-json-config && next build && next-sitemap",
     "dev": "next",
-    "generate-json-config": "tsx generate-config-json-schema.ts"
-  },
-  "devDependencies": {
-    "@theguild/tailwind-config": "0.4.2",
-    "@types/dedent": "0.7.2",
-    "@types/jsonpath": "0.2.4",
-    "@types/node": "20.16.1",
-    "@types/react": "18.3.3",
-    "fast-xml-parser": "4.4.1",
-    "jsonpath": "1.1.1",
-    "prettier-plugin-tailwindcss": "0.2.8"
+    "generate-json-config": "tsx generate-config-json-schema.ts",
+    "start": "next start"
   },
   "dependencies": {
     "@graphql-codegen/add": "5.0.3",
@@ -81,6 +71,16 @@
     "react-markdown": "8.0.7",
     "react-select": "5.8.0",
     "typescript-json-schema": "0.56.0"
+  },
+  "devDependencies": {
+    "@theguild/tailwind-config": "0.4.2",
+    "@types/dedent": "0.7.2",
+    "@types/jsonpath": "0.2.4",
+    "@types/node": "20.16.1",
+    "@types/react": "18.3.3",
+    "fast-xml-parser": "4.4.1",
+    "jsonpath": "1.1.1",
+    "prettier-plugin-tailwindcss": "0.6.6"
   },
   "browserslist": {
     "production": [

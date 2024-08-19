@@ -1,16 +1,3 @@
-import {
-  BaseTypesVisitor,
-  DeclarationBlock,
-  DeclarationKind,
-  getConfigValue,
-  indent,
-  isOneOfInputObjectType,
-  normalizeAvoidOptionals,
-  NormalizedAvoidOptionalsConfig,
-  ParsedTypesConfig,
-  transformComment,
-  wrapWithSingleQuotes,
-} from '@graphql-codegen/visitor-plugin-common';
 import autoBind from 'auto-bind';
 import {
   EnumTypeDefinitionNode,
@@ -26,6 +13,19 @@ import {
   TypeDefinitionNode,
   UnionTypeDefinitionNode,
 } from 'graphql';
+import {
+  BaseTypesVisitor,
+  DeclarationBlock,
+  DeclarationKind,
+  getConfigValue,
+  indent,
+  isOneOfInputObjectType,
+  normalizeAvoidOptionals,
+  NormalizedAvoidOptionalsConfig,
+  ParsedTypesConfig,
+  transformComment,
+  wrapWithSingleQuotes,
+} from '@graphql-codegen/visitor-plugin-common';
 import { TypeScriptPluginConfig } from './config.js';
 import { TypeScriptOperationVariablesToObject } from './typescript-variables-to-object.js';
 
@@ -54,16 +54,20 @@ export const MAKE_INCREMENTAL_SIGNATURE = `type Incremental<T> = T | { [P in key
 
 export class TsVisitor<
   TRawConfig extends TypeScriptPluginConfig = TypeScriptPluginConfig,
-  TParsedConfig extends TypeScriptPluginParsedConfig = TypeScriptPluginParsedConfig
+  TParsedConfig extends TypeScriptPluginParsedConfig = TypeScriptPluginParsedConfig,
 > extends BaseTypesVisitor<TRawConfig, TParsedConfig> {
-  constructor(schema: GraphQLSchema, pluginConfig: TRawConfig, additionalConfig: Partial<TParsedConfig> = {}) {
+  constructor(
+    schema: GraphQLSchema,
+    pluginConfig: TRawConfig,
+    additionalConfig: Partial<TParsedConfig> = {},
+  ) {
     super(schema, pluginConfig, {
       noExport: getConfigValue(pluginConfig.noExport, false),
       avoidOptionals: normalizeAvoidOptionals(getConfigValue(pluginConfig.avoidOptionals, false)),
       maybeValue: getConfigValue(pluginConfig.maybeValue, 'T | null'),
       inputMaybeValue: getConfigValue(
         pluginConfig.inputMaybeValue,
-        getConfigValue(pluginConfig.maybeValue, 'Maybe<T>')
+        getConfigValue(pluginConfig.maybeValue, 'Maybe<T>'),
       ),
       constEnums: getConfigValue(pluginConfig.constEnums, false),
       enumsAsTypes: getConfigValue(pluginConfig.enumsAsTypes, false),
@@ -97,8 +101,8 @@ export class TsVisitor<
         this.config.enumValues,
         false,
         this.config.directiveArgumentAndInputFieldMappings,
-        'InputMaybe'
-      )
+        'InputMaybe',
+      ),
     );
     this.setDeclarationBlockConfig({
       enumNameValueSeparator: ' =',
@@ -135,7 +139,8 @@ export class TsVisitor<
     if (isEnumType(schemaType)) {
       // futureProofEnums + enumsAsTypes combination adds the future value to the enum type itself
       // so it's not necessary to repeat it in the usage
-      const futureProofEnumUsageEnabled = this.config.futureProofEnums === true && this.config.enumsAsTypes !== true;
+      const futureProofEnumUsageEnabled =
+        this.config.futureProofEnums === true && this.config.enumsAsTypes !== true;
 
       if (futureProofEnumUsageEnabled && this.config.allowEnumStringTypes === true) {
         return `${typeString} | '%future added value' | ` + '`${' + typeString + '}`';
@@ -242,18 +247,26 @@ export class TsVisitor<
     return `${this.getMaybeWrapper(ancestors)}<${super.ListType(node, key, parent, path, ancestors)}>`;
   }
 
-  UnionTypeDefinition(node: UnionTypeDefinitionNode, key: string | number | undefined, parent: any): string {
+  UnionTypeDefinition(
+    node: UnionTypeDefinitionNode,
+    key: string | number | undefined,
+    parent: any,
+  ): string {
     if (this.config.onlyOperationTypes || this.config.onlyEnums) return '';
 
     let withFutureAddedValue: string[] = [];
     if (this.config.futureProofUnions) {
       withFutureAddedValue = [
-        this.config.immutableTypes ? `{ readonly __typename?: "%other" }` : `{ __typename?: "%other" }`,
+        this.config.immutableTypes
+          ? `{ readonly __typename?: "%other" }`
+          : `{ __typename?: "%other" }`,
       ];
     }
     const originalNode = parent[key] as UnionTypeDefinitionNode;
     const possibleTypes = originalNode.types
-      .map(t => (this.scalars[t.name.value] ? this._getScalar(t.name.value, 'output') : this.convertName(t)))
+      .map(t =>
+        this.scalars[t.name.value] ? this._getScalar(t.name.value, 'output') : this.convertName(t),
+      )
       .concat(...withFutureAddedValue)
       .join(' | ');
 
@@ -281,7 +294,8 @@ export class TsVisitor<
       ? `EntireFieldWrapper<${node.type}>`
       : (node.type as any as string);
     const originalFieldNode = parent[key] as FieldDefinitionNode;
-    const addOptionalSign = !this.config.avoidOptionals.field && originalFieldNode.type.kind !== Kind.NON_NULL_TYPE;
+    const addOptionalSign =
+      !this.config.avoidOptionals.field && originalFieldNode.type.kind !== Kind.NON_NULL_TYPE;
     const comment = this.getNodeComment(node);
     const { type } = this.config.declarationKind;
 
@@ -290,7 +304,7 @@ export class TsVisitor<
       indent(
         `${this.config.immutableTypes ? 'readonly ' : ''}${node.name}${
           addOptionalSign ? '?' : ''
-        }: ${typeString}${this.getPunctuation(type)}`
+        }: ${typeString}${this.getPunctuation(type)}`,
       )
     );
   }
@@ -300,7 +314,7 @@ export class TsVisitor<
     key?: number | string,
     parent?: any,
     _path?: Array<string | number>,
-    ancestors?: Array<TypeDefinitionNode>
+    ancestors?: Array<TypeDefinitionNode>,
   ): string {
     const originalFieldNode = parent[key] as FieldDefinitionNode;
 
@@ -331,7 +345,7 @@ export class TsVisitor<
       if (isOneOfInputObjectType(parentType)) {
         if (originalFieldNode.type.kind === Kind.NON_NULL_TYPE) {
           throw new Error(
-            'Fields on an input object type can not be non-nullable. It seems like the schema was not validated.'
+            'Fields on an input object type can not be non-nullable. It seems like the schema was not validated.',
           );
         }
         const fieldParts: Array<string> = [];
@@ -366,7 +380,9 @@ export class TsVisitor<
     };
 
     const withFutureAddedValue = [
-      this.config.futureProofEnums ? [indent('| ' + wrapWithSingleQuotes('%future added value'))] : [],
+      this.config.futureProofEnums
+        ? [indent('| ' + wrapWithSingleQuotes('%future added value'))]
+        : [],
     ];
 
     const enumTypeName = this.convertName(node, {
@@ -391,7 +407,7 @@ export class TsVisitor<
                 return comment + indent('| ' + wrapWithSingleQuotes(enumValue));
               })
               .concat(...withFutureAddedValue)
-              .join('\n')
+              .join('\n'),
         ).string;
     }
 
@@ -411,12 +427,12 @@ export class TsVisitor<
                 this.convertName(enumOption, {
                   useTypesPrefix: false,
                   transformUnderscore: true,
-                })
+                }),
               );
               return comment + indent(optionName) + ` = ${enumValue}`;
             })
             .concat(...withFutureAddedValue)
-            .join(',\n')
+            .join(',\n'),
         ).string;
 
       return block;
@@ -441,7 +457,7 @@ export class TsVisitor<
                 this.convertName(enumOption, {
                   useTypesPrefix: false,
                   transformUnderscore: true,
-                })
+                }),
               );
               const comment = transformComment(enumOption.description as any as string, 1);
               const name = enumOption.name as unknown as string;
@@ -449,7 +465,7 @@ export class TsVisitor<
 
               return comment + indent(`${optionName}: ${wrapWithSingleQuotes(enumValue)}`);
             })
-            .join(',\n')
+            .join(',\n'),
         ).string;
 
       return [enumAsConst, typeName].join('\n');

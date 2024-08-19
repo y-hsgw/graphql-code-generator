@@ -1,6 +1,6 @@
+import { parse } from 'graphql';
 import { mergeOutputs, Types } from '@graphql-codegen/plugin-helpers';
 import { validateTs } from '@graphql-codegen/testing';
-import { parse } from 'graphql';
 import { plugin } from '../src/index.js';
 
 describe('graphql-codegen typescript-graphql-document-nodes', () => {
@@ -18,7 +18,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       {},
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -53,7 +53,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       {},
-      { outputFile: '' }
+      { outputFile: '' },
     )) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -86,7 +86,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       {},
-      { outputFile: '' }
+      { outputFile: '' },
     )) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo('');
@@ -111,7 +111,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       {},
-      { outputFile: '' }
+      { outputFile: '' },
     )) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -144,7 +144,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { namingConvention: 'change-case-all#camelCase' },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -171,7 +171,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { namingConvention: 'change-case-all#pascalCase', transformUnderscore: false } as any,
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -203,7 +203,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
           transformUnderscore: true,
         },
       },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -230,7 +230,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { namingConvention: 'change-case-all#constantCase' },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -257,7 +257,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { namePrefix: 'Graphql' },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -284,7 +284,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { nameSuffix: 'Query' },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -311,7 +311,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       { noGraphQLTag: true },
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`
@@ -349,7 +349,7 @@ describe('graphql-codegen typescript-graphql-document-nodes', () => {
         },
       ],
       {},
-      { outputFile: '' }
+      { outputFile: '' },
     ) as Types.ComplexPluginOutput;
 
     expect(result.content).toBeSimilarStringTo(`

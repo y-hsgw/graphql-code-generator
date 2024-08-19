@@ -1,6 +1,11 @@
 import { extname } from 'path';
-import { PluginFunction, PluginValidateFn, removeFederation, Types } from '@graphql-codegen/plugin-helpers';
 import { execute, GraphQLSchema, parse } from 'graphql';
+import {
+  PluginFunction,
+  PluginValidateFn,
+  removeFederation,
+  Types,
+} from '@graphql-codegen/plugin-helpers';
 
 interface IntrospectionResultData {
   __schema: {
@@ -121,7 +126,7 @@ export const plugin: PluginFunction = async (
   schema: GraphQLSchema,
   _documents,
   pluginConfig: FragmentMatcherConfig,
-  info
+  info,
 ): Promise<string> => {
   const config: Required<FragmentMatcherConfig> = {
     module: 'es2015',
@@ -167,7 +172,9 @@ export const plugin: PluginFunction = async (
       ? {
           __schema: {
             ...introspection.data.__schema,
-            types: introspection.data.__schema.types.filter(type => type.kind === 'UNION' || type.kind === 'INTERFACE'),
+            types: introspection.data.__schema.types.filter(
+              type => type.kind === 'UNION' || type.kind === 'INTERFACE',
+            ),
           },
         }
       : {
@@ -183,7 +190,8 @@ export const plugin: PluginFunction = async (
   }
 
   if (extensions.js.includes(ext)) {
-    const defaultExportStatement = config.module === 'es2015' ? `export default` : 'module.exports =';
+    const defaultExportStatement =
+      config.module === 'es2015' ? `export default` : 'module.exports =';
 
     return `
       ${defaultExportStatement} ${content}
@@ -235,18 +243,20 @@ export const validate: PluginValidateFn<any> = async (
   _schema: GraphQLSchema,
   _documents: Types.DocumentFile[],
   config: FragmentMatcherConfig,
-  outputFile: string
+  outputFile: string,
 ) => {
   const ext = extname(outputFile).toLowerCase();
   const all = Object.values(extensions).reduce((acc, exts) => [...acc, ...exts], []);
 
   if (!all.includes(ext)) {
     throw new Error(
-      `Plugin "fragment-matcher" requires extension to be one of ${all.map(val => val.replace('.', '')).join(', ')}!`
+      `Plugin "fragment-matcher" requires extension to be one of ${all.map(val => val.replace('.', '')).join(', ')}!`,
     );
   }
 
   if (config.module === 'commonjs' && extensions.ts.includes(ext)) {
-    throw new Error(`Plugin "fragment-matcher" doesn't support commonjs modules combined with TypeScript!`);
+    throw new Error(
+      `Plugin "fragment-matcher" doesn't support commonjs modules combined with TypeScript!`,
+    );
   }
 };

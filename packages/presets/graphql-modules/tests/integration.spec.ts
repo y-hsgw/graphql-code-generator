@@ -166,7 +166,7 @@ describe('Integration', () => {
 
     expect(usersModuleOutput).toBeDefined();
     expect(usersModuleOutput.content).toContain(
-      `export type QueryResolvers = Pick<Types.QueryResolvers, DefinedFields['Query']>;`
+      `export type QueryResolvers = Pick<Types.QueryResolvers, DefinedFields['Query']>;`,
     );
     expect(usersModuleOutput.content).toContain('Query?: QueryResolvers;');
   });

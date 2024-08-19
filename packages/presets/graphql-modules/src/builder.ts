@@ -1,4 +1,3 @@
-import { BaseVisitor } from '@graphql-codegen/visitor-plugin-common';
 import { pascalCase } from 'change-case-all';
 import {
   DocumentNode,
@@ -17,6 +16,7 @@ import {
   TypeExtensionNode,
   visit,
 } from 'graphql';
+import { BaseVisitor } from '@graphql-codegen/visitor-plugin-common';
 import { ModulesConfig } from './config.js';
 import {
   buildBlock,
@@ -32,8 +32,19 @@ import {
 
 type RegistryKeys = 'objects' | 'inputs' | 'interfaces' | 'scalars' | 'unions' | 'enums';
 type Registry = Record<RegistryKeys, string[]>;
-const registryKeys: RegistryKeys[] = ['objects', 'inputs', 'interfaces', 'scalars', 'unions', 'enums'];
-const resolverKeys: Array<Extract<RegistryKeys, 'objects' | 'enums' | 'scalars'>> = ['scalars', 'objects', 'enums'];
+const registryKeys: RegistryKeys[] = [
+  'objects',
+  'inputs',
+  'interfaces',
+  'scalars',
+  'unions',
+  'enums',
+];
+const resolverKeys: Array<Extract<RegistryKeys, 'objects' | 'enums' | 'scalars'>> = [
+  'scalars',
+  'objects',
+  'enums',
+];
 
 export function buildModule(
   name: string,
@@ -60,9 +71,12 @@ export function buildModule(
     schema?: GraphQLSchema;
     useGraphQLModules: boolean;
     useTypeImports?: boolean;
-  }
+  },
 ): string {
-  const picks: Record<RegistryKeys, Record<string, string[]>> = createObject(registryKeys, () => ({}));
+  const picks: Record<RegistryKeys, Record<string, string[]>> = createObject(
+    registryKeys,
+    () => ({}),
+  );
   const defined: Registry = createObject(registryKeys, () => []);
   const extended: Registry = createObject(registryKeys, () => []);
 
@@ -120,7 +134,9 @@ export function buildModule(
   //
 
   // An actual output
-  const imports = [`import${useTypeImports ? ' type' : ''} * as ${importNamespace} from "${importPath}";`];
+  const imports = [
+    `import${useTypeImports ? ' type' : ''} * as ${importNamespace} from "${importPath}";`,
+  ];
 
   if (useGraphQLModules) {
     imports.push(`import${useTypeImports ? ' type' : ''} * as gm from "graphql-modules";`);
@@ -164,7 +180,7 @@ export function buildModule(
           `${typeName}: ${printPicks(typeName, {
             ...picks.objects,
             ...picks.interfaces,
-          })};`
+          })};`,
       ),
     });
   }
@@ -216,8 +232,8 @@ export function buildModule(
             'DefinedFields',
             // In case of enabled `requireRootResolvers` flag, the preset has to produce a non-optional properties.
             requireRootResolvers && rootTypes.includes(name),
-            !rootTypes.includes(name) && defined.objects.includes(name) ? ` | '__isTypeOf'` : ''
-          )
+            !rootTypes.includes(name) && defined.objects.includes(name) ? ` | '__isTypeOf'` : '',
+          ),
         )
         .join('\n'),
     ].join('\n');
@@ -257,7 +273,9 @@ export function buildModule(
             continue;
           }
           if (k === 'scalars') {
-            lines.push(`${typeName}?: ${encapsulateTypeName(importNamespace)}.Resolvers['${typeName}'];`);
+            lines.push(
+              `${typeName}?: ${encapsulateTypeName(importNamespace)}.Resolvers['${typeName}'];`,
+            );
           } else {
             // In case of enabled `requireRootResolvers` flag, the preset has to produce a non-optional property.
             const fieldModifier = requireRootResolvers && rootTypes.includes(typeName) ? '' : '?';
@@ -285,13 +303,15 @@ export function buildModule(
     for (const typeName in picks.objects) {
       if (Object.prototype.hasOwnProperty.call(picks.objects, typeName)) {
         const fields = picks.objects[typeName];
-        const lines = [wildcardField].concat(fields.map(field => printResolveMiddlewareRecord(field)));
+        const lines = [wildcardField].concat(
+          fields.map(field => printResolveMiddlewareRecord(field)),
+        );
 
         blocks.push(
           buildBlock({
             name: `${typeName}?:`,
             lines,
-          })
+          }),
         );
       }
     }
@@ -306,7 +326,12 @@ export function buildModule(
     return `${path}?: gm.Middleware[];`;
   }
 
-  function printResolverType(typeName: string, picksTypeName: string, requireFieldsResolvers = false, extraKeys = '') {
+  function printResolverType(
+    typeName: string,
+    picksTypeName: string,
+    requireFieldsResolvers = false,
+    extraKeys = '',
+  ) {
     const typeSignature = `Pick<${importNamespace}.${baseVisitor.convertName(typeName, {
       suffix: 'Resolvers',
     })}, ${picksTypeName}['${typeName}']${extraKeys}>`;
@@ -373,7 +398,7 @@ export function buildModule(
       | InterfaceTypeExtensionNode
       | InputObjectTypeDefinitionNode
       | InputObjectTypeExtensionNode,
-    picksObj: Record<string, string[]>
+    picksObj: Record<string, string[]>,
   ) {
     const name = node.name.value;
 

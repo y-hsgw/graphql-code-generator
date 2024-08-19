@@ -79,7 +79,7 @@ export function getQuestions(possibleTargets: Record<Tags, boolean>): inquirer.Q
       validate: (str: string) => {
         const isNotEmpty = str.length > 0;
         const hasCorrectExtension = ['json', 'yml', 'yaml', 'js', 'ts'].some(ext =>
-          str.toLocaleLowerCase().endsWith(`.${ext}`)
+          str.toLocaleLowerCase().endsWith(`.${ext}`),
         );
 
         return isNotEmpty && hasCorrectExtension;
@@ -149,7 +149,10 @@ export function getApplicationTypeChoices(possibleTargets: Record<Tags, boolean>
       key: 'client',
       value: [Tags.typescript, Tags.flow],
       checked:
-        possibleTargets.Browser && !possibleTargets.Angular && !possibleTargets.React && !possibleTargets.Stencil,
+        possibleTargets.Browser &&
+        !possibleTargets.Angular &&
+        !possibleTargets.React &&
+        !possibleTargets.Stencil,
     },
   ];
 }

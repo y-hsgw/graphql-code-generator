@@ -1,14 +1,18 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const { plugins, ...prettierConfig } = require('@theguild/prettier-config');
+import sveltePrettier from 'prettier-plugin-svelte';
+import * as prettierTailwind from 'prettier-plugin-tailwindcss';
+import guildPrettierConfig from '@theguild/prettier-config';
 
-module.exports = {
+const { plugins, ...prettierConfig } = guildPrettierConfig;
+
+export default {
   ...prettierConfig,
   plugins: [
     ...plugins,
     // `prettier-plugin-svelte` and `svelte` packages used for formatting ```svelte code blocks in md/mdx files
-    require('prettier-plugin-svelte'),
+    sveltePrettier,
     // Sort classes in website
-    require('prettier-plugin-tailwindcss'),
+    prettierTailwind,
   ],
   tailwindConfig: './website/tailwind.config.ts',
 };

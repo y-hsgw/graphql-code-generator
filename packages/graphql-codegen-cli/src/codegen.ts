@@ -2,6 +2,8 @@ import fs from 'fs';
 import { createRequire } from 'module';
 import { cpus } from 'os';
 import path from 'path';
+import { DocumentNode, GraphQLError, GraphQLSchema } from 'graphql';
+import { Listr, ListrTask } from 'listr2';
 import { codegen } from '@graphql-codegen/core';
 import {
   CodegenPlugin,
@@ -11,13 +13,11 @@ import {
   normalizeOutputParam,
   Types,
 } from '@graphql-codegen/plugin-helpers';
-import { DocumentNode, GraphQLError, GraphQLSchema } from 'graphql';
-import { Listr, ListrTask } from 'listr2';
 import { CodegenContext, ensureContext, shouldEmitLegacyCommonJSImports } from './config.js';
+import { getDocumentTransform } from './documentTransforms.js';
 import { getPluginByName } from './plugins.js';
 import { getPresetByName } from './presets.js';
 import { debugLog, printLogs } from './utils/debugging.js';
-import { getDocumentTransform } from './documentTransforms.js';
 
 /**
  * Poor mans ESM detection.
@@ -49,7 +49,11 @@ const makeDefaultLoader = (from: string) => {
 
 type Ctx = { errors: Error[] };
 
-function createCache(): <T>(namespace: string, key: string, factory: () => Promise<T>) => Promise<T> {
+function createCache(): <T>(
+  namespace: string,
+  key: string,
+  factory: () => Promise<T>,
+) => Promise<T> {
   const cache = new Map<string, Promise<unknown>>();
 
   return function ensure<T>(namespace: string, key: string, factory: () => Promise<T>): Promise<T> {
@@ -68,7 +72,9 @@ function createCache(): <T>(namespace: string, key: string, factory: () => Promi
   };
 }
 
-export async function executeCodegen(input: CodegenContext | Types.Config): Promise<Types.FileOutput[]> {
+export async function executeCodegen(
+  input: CodegenContext | Types.Config,
+): Promise<Types.FileOutput[]> {
   const context = ensureContext(input);
   const config = context.getConfig();
   const pluginContext = context.getPluginContext();
@@ -130,7 +136,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
           my-file.ts:
             - plugin1
             - plugin2
-            - plugin3`
+            - plugin3`,
       );
     }
 
@@ -151,7 +157,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
               - plugin1
               - plugin2
               - plugin3
-          `
+          `,
         );
       }
     }
@@ -162,7 +168,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
         filename =>
           !generates[filename].schema ||
           (Array.isArray(generates[filename].schema === 'object') &&
-            (generates[filename].schema as unknown as any[]).length === 0)
+            (generates[filename].schema as unknown as any[]).length === 0),
       )
     ) {
       throw new Error(
@@ -178,7 +184,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
         generates:
           path/to/output:
             schema: my-schema.graphql
-      `
+      `,
       );
     }
   }
@@ -207,8 +213,12 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                 let outputSchema: DocumentNode;
                 const outputFileTemplateConfig = outputConfig.config || {};
                 let outputDocuments: Types.DocumentFile[] = [];
-                const outputSpecificSchemas = normalizeInstanceOrArray<Types.Schema>(outputConfig.schema);
-                let outputSpecificDocuments = normalizeInstanceOrArray<Types.OperationDocument>(outputConfig.documents);
+                const outputSpecificSchemas = normalizeInstanceOrArray<Types.Schema>(
+                  outputConfig.schema,
+                );
+                let outputSpecificDocuments = normalizeInstanceOrArray<Types.OperationDocument>(
+                  outputConfig.documents,
+                );
 
                 const preset: Types.OutputPreset | null = hasPreset
                   ? typeof outputConfig.preset === 'string'
@@ -217,7 +227,10 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                   : null;
 
                 if (preset?.prepareDocuments) {
-                  outputSpecificDocuments = await preset.prepareDocuments(filename, outputSpecificDocuments);
+                  outputSpecificDocuments = await preset.prepareDocuments(
+                    filename,
+                    outputSpecificDocuments,
+                  );
                 }
 
                 return subTask.newListr(
@@ -228,7 +241,10 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                         async () => {
                           debugLog(`[CLI] Loading Schemas`);
                           const schemaPointerMap: any = {};
-                          const allSchemaDenormalizedPointers = [...rootSchemas, ...outputSpecificSchemas];
+                          const allSchemaDenormalizedPointers = [
+                            ...rootSchemas,
+                            ...outputSpecificSchemas,
+                          ];
 
                           for (const denormalizedPtr of allSchemaDenormalizedPointers) {
                             if (typeof denormalizedPtr === 'string') {
@@ -253,7 +269,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                         },
                         filename,
                         `Load GraphQL schemas: ${filename}`,
-                        ctx
+                        ctx,
                       ),
                     },
                     {
@@ -262,7 +278,10 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                         async () => {
                           debugLog(`[CLI] Loading Documents`);
                           const documentPointerMap: any = {};
-                          const allDocumentsDenormalizedPointers = [...rootDocuments, ...outputSpecificDocuments];
+                          const allDocumentsDenormalizedPointers = [
+                            ...rootDocuments,
+                            ...outputSpecificDocuments,
+                          ];
                           for (const denormalizedPtr of allDocumentsDenormalizedPointers) {
                             if (typeof denormalizedPtr === 'string') {
                               documentPointerMap[denormalizedPtr] = {};
@@ -293,7 +312,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                         },
                         filename,
                         `Load GraphQL documents: ${filename}`,
-                        ctx
+                        ctx,
                       ),
                     },
                     {
@@ -303,9 +322,12 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                           debugLog(`[CLI] Generating output`);
                           const normalizedPluginsArray = normalizeConfig(outputConfig.plugins);
 
-                          const pluginLoader = config.pluginLoader || makeDefaultLoader(context.cwd);
+                          const pluginLoader =
+                            config.pluginLoader || makeDefaultLoader(context.cwd);
                           const pluginPackages = await Promise.all(
-                            normalizedPluginsArray.map(plugin => getPluginByName(Object.keys(plugin)[0], pluginLoader))
+                            normalizedPluginsArray.map(plugin =>
+                              getPluginByName(Object.keys(plugin)[0], pluginLoader),
+                            ),
                           );
 
                           const pluginMap: {
@@ -315,7 +337,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                               const plugin = normalizedPluginsArray[i];
                               const name = Object.keys(plugin)[0];
                               return [name, pkg];
-                            })
+                            }),
                           );
 
                           const mergedConfig = {
@@ -332,9 +354,9 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                                   return await getDocumentTransform(
                                     config,
                                     makeDefaultLoader(context.cwd),
-                                    `the element at index ${index} of the documentTransforms`
+                                    `the element at index ${index} of the documentTransforms`,
                                   );
-                                })
+                                }),
                               )
                             : [];
 
@@ -354,7 +376,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                                     profiler: context.profiler,
                                     documentTransforms,
                                   }),
-                                `Build Generates Section: ${filename}`
+                                `Build Generates Section: ${filename}`,
                               )
                             : [
                                 {
@@ -375,7 +397,10 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                             const output = await codegen({
                               ...outputArgs,
                               // @ts-expect-error todo: fix 'emitLegacyCommonJSImports' does not exist in type 'GenerateOptions'
-                              emitLegacyCommonJSImports: shouldEmitLegacyCommonJSImports(config, outputArgs.filename),
+                              emitLegacyCommonJSImports: shouldEmitLegacyCommonJSImports(
+                                config,
+                                outputArgs.filename,
+                              ),
                               cache,
                             });
                             result.push({
@@ -385,18 +410,21 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
                             });
                           };
 
-                          await context.profiler.run(() => Promise.all(outputs.map(process)), `Codegen: ${filename}`);
+                          await context.profiler.run(
+                            () => Promise.all(outputs.map(process)),
+                            `Codegen: ${filename}`,
+                          );
                         },
                         filename,
                         `Generate: ${filename}`,
-                        ctx
+                        ctx,
                       ),
                     },
                   ],
                   {
                     // it stops when of the tasks failed
                     exitOnError: true,
-                  }
+                  },
                 );
               },
               // It doesn't stop when one of tasks failed, to finish at least some of outputs
@@ -417,7 +445,7 @@ export async function executeCodegen(input: CodegenContext | Types.Config): Prom
       ctx: { errors: [] },
       rendererSilent: isTest || config.silent,
       exitOnError: true,
-    }
+    },
   );
 
   // All the errors throw in `listr2` are collected in context

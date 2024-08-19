@@ -1,11 +1,3 @@
-import { TypeScriptOperationVariablesToObject } from '@graphql-codegen/typescript';
-import {
-  BaseResolversVisitor,
-  DeclarationKind,
-  getConfigValue,
-  normalizeAvoidOptionals,
-  ParsedResolversConfig,
-} from '@graphql-codegen/visitor-plugin-common';
 import autoBind from 'auto-bind';
 import {
   EnumTypeDefinitionNode,
@@ -15,6 +7,14 @@ import {
   NamedTypeNode,
   NonNullTypeNode,
 } from 'graphql';
+import { TypeScriptOperationVariablesToObject } from '@graphql-codegen/typescript';
+import {
+  BaseResolversVisitor,
+  DeclarationKind,
+  getConfigValue,
+  normalizeAvoidOptionals,
+  ParsedResolversConfig,
+} from '@graphql-codegen/visitor-plugin-common';
 import { TypeScriptResolversPluginConfig } from './config.js';
 
 export const ENUM_RESOLVERS_SIGNATURE =
@@ -41,7 +41,7 @@ export class TypeScriptResolversVisitor extends BaseResolversVisitor<
         allowParentTypeOverride: getConfigValue(pluginConfig.allowParentTypeOverride, false),
         optionalInfoArgument: getConfigValue(pluginConfig.optionalInfoArgument, false),
       } as ParsedTypeScriptResolversConfig,
-      schema
+      schema,
     );
     autoBind(this);
     this.setVariablesTransformer(
@@ -54,8 +54,8 @@ export class TypeScriptResolversVisitor extends BaseResolversVisitor<
         [],
         this.config.enumPrefix,
         this.config.enumSuffix,
-        this.config.enumValues
-      )
+        this.config.enumValues,
+      ),
     );
 
     if (this.config.useIndexSignature) {
@@ -75,7 +75,11 @@ export class TypeScriptResolversVisitor extends BaseResolversVisitor<
     return `ParentType extends ${parentType} = ${parentType}`;
   }
 
-  protected formatRootResolver(schemaTypeName: string, resolverType: string, declarationKind: DeclarationKind): string {
+  protected formatRootResolver(
+    schemaTypeName: string,
+    resolverType: string,
+    declarationKind: DeclarationKind,
+  ): string {
     const avoidOptionals = this.config.avoidOptionals.resolvers;
     return `${schemaTypeName}${avoidOptionals ? '' : '?'}: ${resolverType}${this.getPunctuation(declarationKind)}`;
   }
@@ -117,7 +121,10 @@ export class TypeScriptResolversVisitor extends BaseResolversVisitor<
     return ';';
   }
 
-  protected buildEnumResolverContentBlock(node: EnumTypeDefinitionNode, mappedEnumType: string): string {
+  protected buildEnumResolverContentBlock(
+    node: EnumTypeDefinitionNode,
+    mappedEnumType: string,
+  ): string {
     const valuesMap = `{ ${(node.values || [])
       .map(v => `${v.name as any as string}${this.config.avoidOptionals.resolvers ? '' : '?'}: any`)
       .join(', ')} }`;
@@ -129,7 +136,7 @@ export class TypeScriptResolversVisitor extends BaseResolversVisitor<
 
   protected buildEnumResolversExplicitMappedValues(
     node: EnumTypeDefinitionNode,
-    valuesMapping: { [valueName: string]: string | number }
+    valuesMapping: { [valueName: string]: string | number },
   ): string {
     return `{ ${(node.values || [])
       .map(v => {

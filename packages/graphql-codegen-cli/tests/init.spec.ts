@@ -93,7 +93,10 @@ describe('init', () => {
     });
 
     it('should guess typescript projects', async () => {
-      require('fs').__setMockFiles(resolve(process.cwd(), 'package.json'), packageJson.withTypescript);
+      require('fs').__setMockFiles(
+        resolve(process.cwd(), 'package.json'),
+        packageJson.withTypescript,
+      );
       const targets = await guessTargets();
       expect(targets.TypeScript).toEqual(true);
     });
@@ -123,7 +126,10 @@ describe('init', () => {
     });
 
     it('should guess graphql-request projects', async () => {
-      require('fs').__setMockFiles(resolve(process.cwd(), 'package.json'), packageJson.withGraphqlRequest);
+      require('fs').__setMockFiles(
+        resolve(process.cwd(), 'package.json'),
+        packageJson.withGraphqlRequest,
+      );
       const targets = await guessTargets();
       expect(targets.graphqlRequest).toEqual(true);
     });
@@ -540,7 +546,7 @@ function useInputs(inputs: {
       inputs.onOutput,
       inputs.onIntrospection,
       inputs.onConfig,
-      inputs.onScript
-    )
+      inputs.onScript,
+    ),
   );
 }

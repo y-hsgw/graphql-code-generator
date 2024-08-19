@@ -1,9 +1,9 @@
+import { Types } from '@graphql-codegen/plugin-helpers';
 import type { SubscribeCallback } from '@parcel/watcher';
 import ParcelWatcher from '@parcel/watcher';
 import { CodegenContext } from '../../src/config.js';
 import * as fs from '../../src/utils/file-system.js';
 import { createWatcher } from '../../src/utils/watcher.js';
-import { Types } from '@graphql-codegen/plugin-helpers';
 
 /**
  * Setup mocking infrastructure for a fake watcher.
@@ -22,7 +22,7 @@ export const setupMockWatcher = async (
    * it will be set to a mocked function (which in all cases will be part of
    * the return value of {@link setupMockWatcher}).
    */
-  contextOpts: ConstructorParameters<typeof CodegenContext>[0]
+  contextOpts: ConstructorParameters<typeof CodegenContext>[0],
 ) => {
   const onWatchTriggered = createMockOnWatchTriggered();
 
@@ -135,15 +135,19 @@ export const setupMockFilesystem = (
    *  * {@link fs.readFile | `readFile`}: return blank string
    *  * {@link fs.access | `access` }: return `void` (indicates file is accessible, since no error is thrown)
    */
-  implementations?: Partial<typeof fs>
+  implementations?: Partial<typeof fs>,
 ) => {
   const mockedFsSpies = {
     /** Don't write any file */
     writeFile: jest.spyOn(fs, 'writeFile').mockImplementation(implementations?.writeFile),
     /** Read a blank file */
-    readFile: jest.spyOn(fs, 'readFile').mockImplementation(implementations?.readFile ?? (async () => '')),
+    readFile: jest
+      .spyOn(fs, 'readFile')
+      .mockImplementation(implementations?.readFile ?? (async () => '')),
     /** Always accessible (void means accesible, it throws otherwise) */
-    access: jest.spyOn(fs, 'access').mockImplementation(implementations?.access ?? (async () => {})),
+    access: jest
+      .spyOn(fs, 'access')
+      .mockImplementation(implementations?.access ?? (async () => {})),
   };
 
   return {
@@ -163,12 +167,16 @@ export const setupMockFilesystem = (
  *
  * @returns Mocked function that can be passed as a lifecycle hook to `Config.hooks.onWatchTriggered`
  */
-const createMockOnWatchTriggered = () => jest.fn<ReturnType<Types.HookFunction>, Parameters<Types.HookFunction>>();
+const createMockOnWatchTriggered = () =>
+  jest.fn<ReturnType<Types.HookFunction>, Parameters<Types.HookFunction>>();
 
 /** Function to call to dispatch a change and wait for it to be processed by subscription listener */
 type DispatchChange = (path: string, eventType?: ParcelWatcher.EventType) => Promise<void>;
 /** Mocked @parcel/watcher.SubscribeCallback */
-type SubscribeCallbackMock = jest.Mock<ReturnType<SubscribeCallback>, Parameters<SubscribeCallback>>;
+type SubscribeCallbackMock = jest.Mock<
+  ReturnType<SubscribeCallback>,
+  Parameters<SubscribeCallback>
+>;
 /** Convenience type alias for the unsubscribe function of ParcelWatcher subcription */
 type ParcelUnsubscribe = ParcelWatcher.AsyncSubscription['unsubscribe'];
 /** Mocked ParcelUnsubscribe */
@@ -192,16 +200,18 @@ const mockParcelWatcher = (
     dispatchChange: DispatchChange;
     subscribeCallbackSpy: SubscribeCallbackMock;
     unsubscribeSpy: UnsubscribeMock;
-  }) => void
+  }) => void,
 ) => {
   let mockOnEvent: SubscribeCallbackMock;
-  const mockUnsubscribe: UnsubscribeMock = jest.fn<Promise<void>, undefined>(() => Promise.resolve());
+  const mockUnsubscribe: UnsubscribeMock = jest.fn<Promise<void>, undefined>(() =>
+    Promise.resolve(),
+  );
 
   jest.mock('@parcel/watcher', () => ({
     subscribe: async (
       watchDirectory: string,
       subscribeCallback: SubscribeCallbackMock,
-      subscribeOpts?: ParcelWatcher.Options
+      subscribeOpts?: ParcelWatcher.Options,
     ) => {
       mockOnEvent = jest.fn(subscribeCallback);
 

@@ -1,7 +1,10 @@
 import * as TJS from 'typescript-json-schema';
 import { PluginConfig, PresetConfig } from './plugins-docs';
 
-export function generateDocs(schema: TJS.Definition, types: (PluginConfig | PresetConfig)[]): Record<string, string> {
+export function generateDocs(
+  schema: TJS.Definition,
+  types: (PluginConfig | PresetConfig)[],
+): Record<string, string> {
   return Object.fromEntries(
     types.map(p => {
       const subSchema = schema.definitions![p.identifier] as TJS.Definition;
@@ -17,7 +20,7 @@ export function generateDocs(schema: TJS.Definition, types: (PluginConfig | Pres
       }
 
       return [p.name, content];
-    })
+    }),
   );
 }
 

@@ -132,8 +132,14 @@ export const plugin: PluginFunction<{
 }> = (
   _,
   __,
-  { useTypeImports, augmentedModuleName, unmaskFunctionName, emitLegacyCommonJSImports, isStringDocumentMode },
-  _info
+  {
+    useTypeImports,
+    augmentedModuleName,
+    unmaskFunctionName,
+    emitLegacyCommonJSImports,
+    isStringDocumentMode,
+  },
+  _info,
 ) => {
   const documentNodeImport = `${useTypeImports ? 'import type' : 'import'} { ResultOf, DocumentTypeDecoration${
     isStringDocumentMode ? '' : ', TypedDocumentNode'
