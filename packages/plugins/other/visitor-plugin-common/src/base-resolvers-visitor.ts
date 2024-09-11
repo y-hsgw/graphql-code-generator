@@ -582,10 +582,9 @@ export interface RawResolversConfig extends RawConfig {
   internalResolversPrefix?: string;
   /**
    * @type object
-   * @default { __resolveReference: false }
+   * @default { __resolveReference: false, __isTypeOf: false }
    * @description If relevant internal resolvers are set to `true`, the resolver type will only be generated if the right conditions are met.
-   * Enabling this allows a more correct type generation for the resolvers.
-   * For example:
+   * Enabling this allows a more correct type generation for the resolvers:
    * - `__isTypeOf` is generated for implementing types and union members
    * - `__resolveReference` is generated for federation types that have at least one resolvable `@key` directive
    */
@@ -997,7 +996,9 @@ export class BaseResolversVisitor<
 
         const memberTypes = schemaType.getTypes();
 
-        for (const type of memberTypes) (this._objectTypesWithIsTypeOf[type.name] = true);
+        for (const type of memberTypes) {
+          this._objectTypesWithIsTypeOf[type.name] = true;
+        }
 
         res[typeName] = this.getAbstractMembersType({
           typeName,
@@ -1038,7 +1039,9 @@ export class BaseResolversVisitor<
 
         const { interfaceImplementingType, excludeTypes } = this.config.resolversNonOptionalTypename;
 
-        for (const type of implementingTypes) (this._objectTypesWithIsTypeOf[type.name] = true);
+        for (const type of implementingTypes) {
+          this._objectTypesWithIsTypeOf[type.name] = true;
+        }
 
         res[typeName] = this.getAbstractMembersType({
           typeName,
