@@ -1002,7 +1002,7 @@ export class BaseResolversVisitor<
 
         res[typeName] = this.getAbstractMembersType({
           typeName,
-          memberTypes: schemaType.getTypes(),
+          memberTypes,
           isTypenameNonOptional: unionMember && !excludeTypes?.includes(typeName),
         });
       }
